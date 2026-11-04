@@ -32,9 +32,16 @@ not deleted, and when Athena isn't sure, it asks you before changing anything.
 
 ## The app
 
-Two screens, both reading the live backend: **Clarify** (Athena's yes/no question, the words that
+> **Quick look, no install: [static preview of the app screens](https://meta-hackathon-athena.github.io/athena/).**
+> This is not the running system. It is the app's interface on a saved copy of the demo data, so you
+> can click through it without cloning anything. Nothing runs behind it: no agent, no Dreamer, no
+> Muse, and answers aren't saved. To see Athena actually work, clone the repo and follow
+> [Run it](#run-it-about-5-minutes) below (about 5 minutes).
+
+The app is the phone side of the wearable. We built it as a mobile-first web app so anyone can open
+it without an app store. It has two screens: **Clarify** (Athena's yes/no question, the words that
 raised it, and what "Yes" will change) and **Memories** (what Athena believes, and how much it
-trusts it).
+trusts it). Run locally, both read the live backend.
 
 ![Clarify, the answer, and Memories](docs/assets/athena-app.jpg)
 
