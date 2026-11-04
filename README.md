@@ -32,9 +32,13 @@ not deleted, and when Athena isn't sure, it asks you before changing anything.
 
 ## The app
 
-Two screens, both reading the live backend: **Clarify** (Athena's yes/no question, the words that
+**▶ [Try it in your browser](https://meta-hackathon-athena.github.io/athena/)** (no install; a snapshot of the demo data,
+so answers aren't saved)
+
+The app is the phone side of the wearable. We built it as a mobile-first web app so anyone can open
+it without an app store. It has two screens: **Clarify** (Athena's yes/no question, the words that
 raised it, and what "Yes" will change) and **Memories** (what Athena believes, and how much it
-trusts it).
+trusts it). Run locally, both read the live backend.
 
 ![Clarify, the answer, and Memories](docs/assets/athena-app.jpg)
 

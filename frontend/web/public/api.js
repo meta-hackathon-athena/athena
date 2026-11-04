@@ -6,7 +6,9 @@
 
 import { FIXTURES } from "./fixtures.js";
 
-export const FIXTURE_MODE = new URLSearchParams(location.search).has("fixtures");
+// The hosted preview (GitHub Pages) has no backend, so it always uses the snapshot.
+export const HOSTED_PREVIEW = location.hostname.endsWith("github.io");
+export const FIXTURE_MODE = HOSTED_PREVIEW || new URLSearchParams(location.search).has("fixtures");
 
 export class ApiError extends Error {
   constructor(status, code, message) {
@@ -54,6 +56,23 @@ export const api = {
 // ------------------------------------------------------------------ fixture mode
 const local = structuredClone(FIXTURES);
 
+// Mirror what "Yes" does on the backend, only in this page's copy, so the screens stay consistent.
+function applyLocally(q) {
+  const p = q.proposal;
+  if (!p) return;
+  const now = q.heard?.ts_ms ?? q.created_ms;   // simulated time, like the backend
+  if (p.op === "update_commitment_time") {
+    const c = local.commitments.find((x) => x.id === p.cid);
+    for (const x of [c, ...(q.about ?? []).filter((a) => a.id === p.cid)]) {
+      if (x) Object.assign(x, { prev_start_ms: x.start_ms, start_ms: p.start_ms, status: "confirmed", updated_ms: now });
+    }
+  }
+  if (p.op === "complete_reminder") {
+    const r = local.reminders.find((x) => x.id === (p.note_id ?? p.id));
+    if (r) Object.assign(r, { status: "done", done_ms: now });
+  }
+}
+
 function fixture(method, path, body) {
   const [route, query = ""] = path.split("?");
   const parts = route.split("/").filter(Boolean).map(decodeURIComponent);
@@ -68,6 +87,7 @@ function fixture(method, path, body) {
     if (!q) return Promise.reject(new ApiError(404, "not_found", "no such question"));
     q.status = "answered";
     q.answer = body.answer;
+    if (body.answer === "yes") applyLocally(q);
     return reply({ fixture: true, decisions: [{ action: body.answer === "yes" ? "MEMORY_UPDATE" : "NO_ACTION",
                                                 status: "not_saved", reason: "fixture mode: nothing was sent" }],
                    question: q });

@@ -156,7 +156,7 @@ function renderDone() {
       <p class="eyebrow center">You answered ${answer === "yes" ? "Yes" : "No"}</p>
       <h1 class="question small">${f.esc(s.title)}</h1>
       <p class="lede">${f.esc(s.body)}</p>
-      <p class="provenance">${fixture ? "Fixture preview: nothing was saved."
+      <p class="provenance">${fixture ? "Preview: nothing was saved."
         : changed ? "Saved to Athena's knowledge graph." : "Your answer is stored with the question."}</p>
       <div class="row center">
         <a class="btn primary" href="#/memories">${changed ? "See it in Memories" : "Go to Memories"}</a>
