@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prod-dreamer-model"
+version = "0.1.0"
+description = "Vixy production dreamer: context-engine events -> FalkorDB -> multi-step Muse dream loops"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "falkordb[hiredis]>=1.8.1",
+    # embedded FalkorDB (graph.connect() without FALKORDB_URL imports redislite);
+    # falkordblite needs Python >= 3.12. On 3.10/3.11 set FALKORDB_URL (server).
+    "falkordblite>=0.11.0; python_version >= '3.12'",
+    "python-dotenv>=1.2.4",
+    "requests>=2.31",
+]
+
+# context-engine is an optional extra: the dreamer needs it to ingest
+# perception data (`seed`), to load a context-engine JSONL export (`load`) and
+# to read the shared event history in the unified Vixy graph. Reading the graph,
+# dreaming offline over an already-loaded graph and reporting work without it.
+#   uv sync                                   # from the monorepo root: installs everything
+#   uv pip install -e '.[context-engine]'     # standalone, with ../context-engine available
+#   export CONTEXT_ENGINE_SRC=/path/to/context-engine/src
+# See README.md -> "Standalone install".
+[project.optional-dependencies]
+context-engine = ["vixy-context-engine>=0.1.0"]
+
+[project.scripts]
+vixy-dreamer = "prod_dreamer_model.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "vixy-context-engine>=0.1.0",
+]
+
+[tool.uv.sources]
+# Not published on PyPI: the monorepo workspace member components/context-engine.
+vixy-context-engine = { workspace = true }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

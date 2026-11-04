@@ -1,0 +1,176 @@
+{
+  "fixture": "generated public still image + local TTS, two 34-second MP4s; no user recordings",
+  "recordings": [
+    {
+      "id": "day1",
+      "video_sha256": "316eeda6b7ecb3b346e779094f6456e452b144f90bc4526d55a182aafe7f2037",
+      "cache_key": "b3f86815690d8927b1ac1862c7698e9dae7c714f0a87665edad05e31fc90719b",
+      "events": 35,
+      "model_usage": {
+        "vision": {
+          "model_id": "yolo11n.pt",
+          "checkpoint_sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+          "package": "ultralytics",
+          "version": "8.4.202",
+          "device": "cpu",
+          "calls": 34,
+          "seconds": 1.238220333820209
+        },
+        "asr": {
+          "model_id": "base.en",
+          "package": "openai-whisper",
+          "version": "20250625",
+          "device": "cpu",
+          "calls": 1,
+          "seconds": 0.37474400002975017,
+          "checkpoint_sha256": "25a8566e1d0c1e2231d1c762132cd20e0f96a85d16145c3a00adf5d1ac670ead"
+        },
+        "torch": "2.15.0",
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "id": "day2",
+      "video_sha256": "2c74bea1811e272741b1f8df4eac5ece06bfad45cff1371b940703cc08715c5c",
+      "cache_key": "277e1fae9d56fa9b4a96ca729b0f085e4e81e2aec73ebba5c4787946de82e4e6",
+      "events": 35,
+      "model_usage": {
+        "vision": {
+          "model_id": "yolo11n.pt",
+          "checkpoint_sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+          "package": "ultralytics",
+          "version": "8.4.202",
+          "device": "cpu",
+          "calls": 34,
+          "seconds": 0.6541655418695882
+        },
+        "asr": {
+          "model_id": "base.en",
+          "package": "openai-whisper",
+          "version": "20250625",
+          "device": "cpu",
+          "calls": 1,
+          "seconds": 0.26115924993064255,
+          "checkpoint_sha256": "25a8566e1d0c1e2231d1c762132cd20e0f96a85d16145c3a00adf5d1ac670ead"
+        },
+        "torch": "2.15.0",
+        "paid_api_calls": 0
+      }
+    }
+  ],
+  "graph": "vixy_m3_validation_20261104",
+  "duplicate_replay": {
+    "duplicate": 70
+  },
+  "graph_labels": {
+    "AgentLog": 4,
+    "Note": 2,
+    "Tag": 2,
+    "LongTermMemory": 1,
+    "VixyMeta": 1,
+    "Visit": 2,
+    "Day": 2,
+    "DreamRun": 2,
+    "Person": 1
+  },
+  "notification": {
+    "decision_id": "dec_5bf560e61806",
+    "message": "Someone mentioned yesterday that Alex is allergic to peanuts. I haven't verified it. You may want to check with Alex before buying.",
+    "trigger_event_id": "asr:day2:277e1fae9d56fa9b4a96ca72-0",
+    "supporting_memories": [
+      {
+        "id": "ltm-claim-227fa54c192fdd53",
+        "statement": "Alex is allergic to peanuts.",
+        "subject": "Alex",
+        "predicate": "allergic_to",
+        "epistemic_status": "reported",
+        "reported_by": [
+          "unknown"
+        ],
+        "confidence": 0.55,
+        "contested": false,
+        "evidence": [
+          {
+            "id": "note_48254ae2271e1507",
+            "label": "Note",
+            "source_event_id": "asr:day1:b3f86815690d8927b1ac1862-0",
+            "ts_ms": 1793613600000,
+            "speaker_role": "unknown"
+          }
+        ]
+      }
+    ],
+    "ts_ms": 1793700007000
+  },
+  "ask": {
+    "schema": "vixy.ask.v1",
+    "question": "What do you remember about Alex?",
+    "conversation_id": "conv_7d2a69c014b2",
+    "now": "2026-11-03T18:00:34+08:00",
+    "status": "answered",
+    "answer": "About Alex: Alex is allergic to peanuts (reported by someone else; not verified, confidence 0.55, first said Monday 2 Nov).",
+    "interpretation": {
+      "type": "about_entity",
+      "people": [
+        "Alex"
+      ],
+      "topic_keywords": [],
+      "time_range": null,
+      "follow_up": false
+    },
+    "items": [
+      {
+        "id": "ltm-claim-227fa54c192fdd53",
+        "label": "LongTermMemory",
+        "layer": "inferred",
+        "epistemic_status": "reported",
+        "statement": "Alex is allergic to peanuts.",
+        "time": "2026-11-02T18:00:00+08:00",
+        "status": "active",
+        "confidence": 0.55,
+        "subject": "Alex",
+        "predicate": "allergic_to",
+        "object": "peanut",
+        "polarity": true,
+        "contested": false,
+        "reported_by": [
+          "unknown"
+        ],
+        "source_ids": [
+          "note_48254ae2271e1507"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "note_48254ae2271e1507",
+        "label": "Note",
+        "source_event_id": "asr:day1:b3f86815690d8927b1ac1862-0",
+        "speaker_role": "unknown",
+        "speaker_id": "unknown",
+        "time": "2026-11-02T18:00:00+08:00",
+        "statement": "Alex is allergic to peanuts.",
+        "verified": true
+      }
+    ],
+    "answered_by": "rules:vixy.ask.v1",
+    "model_usage": null
+  },
+  "meta_readiness": {
+    "configured": true,
+    "shared_key_matches": true,
+    "inference_calls": 0,
+    "media_uploaded": false,
+    "http_status": 200,
+    "muse_spark_1_3_listed": true,
+    "model_count": 9
+  },
+  "original_supporting_event": {
+    "event_id": "asr:day1:b3f86815690d8927b1ac1862-0",
+    "payload_sha256": "032869eeca311f59d90035a2a41bbc066c5fdaf96970324222b51715a2fc1eaa",
+    "text": "Alex is allergic to peanuts.",
+    "speaker_id": null,
+    "start_time": "2026-11-02T10:00:00Z",
+    "end_time": "2026-11-02T10:00:07Z"
+  }
+}

@@ -1,0 +1,42 @@
+[project]
+name = "metahackathon"
+version = "0.1.0"
+description = "Vixy integrated runtime: context-engine -> Episode Writer -> Active Agent, one FalkorDB graph per user shared with the Dreamer"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "baseten-performance-client>=0.1.16",
+    "falkordb>=1.8.1",
+    "falkordblite>=0.11.0",
+    "pillow>=13.0.0",
+    "python-dotenv>=1.2.4",
+    # sibling repositories of the workspace (see [tool.uv.sources])
+    "vixy-context-engine>=0.1.0",
+    "prod-dreamer-model>=0.1.0",
+]
+
+[project.optional-dependencies]
+perception = [
+    "openai-whisper>=20240930",
+    "ultralytics>=8.4.202,<9",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    # Context Engine's own test dependencies (fastapi, httpx), so all suites share this lock
+    "vixy-context-engine[api,dev]",
+]
+
+[tool.uv.workspace]
+# Monorepo: the components are workspace members, resolved from this checkout (one uv.lock).
+members = ["components/context-engine", "components/dreamer-model"]
+
+[tool.uv.sources]
+vixy-context-engine = { workspace = true }
+prod-dreamer-model = { workspace = true }
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+markers = ["server: needs the shared FalkorDB server (VIXY_TEST_FALKORDB_URL)"]

@@ -1,0 +1,1627 @@
+{
+  "generated_at": "2026-11-04T04:11:00.367256+00:00",
+  "graph": "vixy_dreamer",
+  "session_id": "wearer-01",
+  "coverage": {
+    "labels": {
+      "Note": 6,
+      "Frame": 20618,
+      "Pattern": 13,
+      "Class": 56,
+      "Day": 14,
+      "LongTermMemory": 8
+    },
+    "relationships": {
+      "ABOUT": 21,
+      "DERIVED_FROM": 14,
+      "SAW": 119668,
+      "ON_DAY": 20624,
+      "SUPPORTED_BY": 138
+    },
+    "frames": 20618,
+    "days": 14,
+    "notes": 6,
+    "classes": 56,
+    "patterns": 13,
+    "memories": 8,
+    "first_ms": 1792366800000,
+    "last_ms": 1793516140000,
+    "gps_frames": 20618
+  },
+  "coverage_first": "Mon 19 Oct 2026 07:40",
+  "coverage_last": "Sun 01 Nov 2026 14:55",
+  "patterns": [
+    {
+      "pattern_id": "laptop-notebook-study-work",
+      "statement": "Works and studies on a laptop with a notebook and pen, in classrooms and the library on weekdays.",
+      "kind": "activity",
+      "confidence": 0.95,
+      "status": "active",
+      "time_window": "08:40-16:30",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "created_ms": 1793764012485,
+      "updated_ms": 1793764012485,
+      "evidence_count": 3,
+      "about": [],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261019T084400-0000",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261019T084500-0003",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-21-1240",
+          "day_id": "2026-10-21",
+          "local_date": null,
+          "text": "Need to finish the assignment in the library this afternoon."
+        }
+      ]
+    },
+    {
+      "pattern_id": "friday-supermarket-milk-shop",
+      "statement": "Shops at the supermarket on Friday evenings, including buying milk.",
+      "kind": "activity",
+      "confidence": 0.8,
+      "status": "active",
+      "time_window": "18:00-19:00",
+      "days": [
+        4
+      ],
+      "created_ms": 1793764036868,
+      "updated_ms": 1793764036868,
+      "evidence_count": 3,
+      "about": [],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "supermarket-20261030T181300-0000",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "supermarket-20261030T181320-0001",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-23-1815",
+          "day_id": "2026-10-23",
+          "local_date": null,
+          "text": "Remind me to buy milk at the supermarket."
+        }
+      ]
+    },
+    {
+      "pattern_id": "clinic-visit-one-off-oct21",
+      "statement": "Visited a clinic once on the evening of 2026-10-21; one-off, not a routine.",
+      "kind": "anomaly",
+      "confidence": 0.6,
+      "status": "active",
+      "time_window": "19:00-20:00",
+      "days": [
+        2
+      ],
+      "created_ms": 1793764073266,
+      "updated_ms": 1793764073266,
+      "evidence_count": 2,
+      "about": [],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "clinic-20261021T191900-0003",
+          "note_id": null,
+          "day_id": "2026-10-21",
+          "local_date": "2026-10-21",
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-21-1910",
+          "day_id": "2026-10-21",
+          "local_date": null,
+          "text": "Picking up my prescription at the clinic."
+        }
+      ]
+    },
+    {
+      "pattern_id": "morning-bus-commute",
+      "statement": "Takes the bus to university around 08:10-08:40 on weekdays.",
+      "kind": "commute",
+      "confidence": 0.97,
+      "status": "active",
+      "time_window": "08:10-08:40",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "created_ms": 1793763763217,
+      "updated_ms": 1793764148623,
+      "evidence_count": 14,
+      "about": [
+        "bus interior"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T081700-0000",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T081720-0001",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T081800-0003",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-29",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-28",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-27",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-26",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-23",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-22",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-21",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-20",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-19-0815",
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": "Taking the bus to uni again, the traffic was bad today."
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    },
+    {
+      "pattern_id": "evening-bus-return-mon-wed-fri",
+      "statement": "Returns home by bus around 16:30-17:00 on Monday, Wednesday and Friday.",
+      "kind": "commute",
+      "confidence": 0.92,
+      "status": "active",
+      "time_window": "16:30-17:00",
+      "days": [
+        0,
+        2,
+        4
+      ],
+      "created_ms": 1793763773916,
+      "updated_ms": 1793763933478,
+      "evidence_count": 3,
+      "about": [
+        "bus interior"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T163220-0001",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T163240-0002",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T163320-0004",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        }
+      ]
+    },
+    {
+      "pattern_id": "university-campus-south",
+      "statement": "Spends weekdays on university campus near 1.3442, 103.6810 for classes and library study.",
+      "kind": "location",
+      "confidence": 0.95,
+      "status": "active",
+      "time_window": "08:40-17:00",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "created_ms": 1793763951590,
+      "updated_ms": 1793763951590,
+      "evidence_count": 3,
+      "about": [
+        "classroom",
+        "library"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261030T084400-0000",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261030T084440-0002",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261030T084520-0004",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        }
+      ]
+    },
+    {
+      "pattern_id": "home-base-north",
+      "statement": "Lives at home base near 1.3483, 103.6831, present mornings and nights daily.",
+      "kind": "location",
+      "confidence": 0.95,
+      "status": "active",
+      "time_window": "07:00-08:00",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "created_ms": 1793763942079,
+      "updated_ms": 1793763942079,
+      "evidence_count": 3,
+      "about": [
+        "bedroom"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "home-20261101T090200-0000",
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": "2026-11-01",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "home-20261101T090220-0001",
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": "2026-11-01",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "home-20261101T090300-0003",
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": "2026-11-01",
+          "text": null
+        }
+      ]
+    },
+    {
+      "pattern_id": "canteen-noodle-preference",
+      "statement": "Prefers noodles at the canteen food court for weekday lunch, as stated on 2026-10-19 and seen on 10 weekdays.",
+      "kind": "preference",
+      "confidence": 0.95,
+      "status": "active",
+      "time_window": "11:30-12:30",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "created_ms": 1793764020621,
+      "updated_ms": 1793764020621,
+      "evidence_count": 3,
+      "about": [],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "food_court-20261019T113640-0002",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "food_court-20261019T113700-0003",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-19-1142",
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": "I really like the noodles at the canteen here."
+        }
+      ]
+    },
+    {
+      "pattern_id": "midday-canteen-lunch",
+      "statement": "Eats lunch at the food court/canteen around 11:35-12:30 on weekdays.",
+      "kind": "routine",
+      "confidence": 0.95,
+      "status": "active",
+      "time_window": "11:35-12:30",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "created_ms": 1793763790406,
+      "updated_ms": 1793763790406,
+      "evidence_count": 10,
+      "about": [],
+      "evidence": [
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-29",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-28",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-27",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-26",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-23",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-22",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-21",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-20",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    },
+    {
+      "pattern_id": "afternoon-library-study",
+      "statement": "Studies in the library around 12:40-16:30 on weekdays.",
+      "kind": "routine",
+      "confidence": 0.93,
+      "status": "active",
+      "time_window": "12:40-16:30",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "created_ms": 1793763799932,
+      "updated_ms": 1793763799932,
+      "evidence_count": 10,
+      "about": [],
+      "evidence": [
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-29",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-28",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-27",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-26",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-23",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-22",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-21",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-20",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    },
+    {
+      "pattern_id": "evening-gym-tue-thu",
+      "statement": "Goes to the gym around 16:30-17:40 on Tuesdays and Thursdays.",
+      "kind": "routine",
+      "confidence": 0.9,
+      "status": "active",
+      "time_window": "16:30-17:40",
+      "days": [
+        1,
+        3
+      ],
+      "created_ms": 1793763808442,
+      "updated_ms": 1793763808442,
+      "evidence_count": 4,
+      "about": [],
+      "evidence": [
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-29",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-27",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-22",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-20",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    },
+    {
+      "pattern_id": "morning-classes-weekdays",
+      "statement": "Attends classes in the classroom around 08:40-11:30 on weekdays.",
+      "kind": "schedule",
+      "confidence": 0.95,
+      "status": "active",
+      "time_window": "08:40-11:30",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "created_ms": 1793763781567,
+      "updated_ms": 1793763781567,
+      "evidence_count": 10,
+      "about": [],
+      "evidence": [
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-29",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-28",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-27",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-26",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-23",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-22",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-21",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-20",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    },
+    {
+      "pattern_id": "weekend-cafe-brunch-social",
+      "statement": "Meets friends such as Alex at a cafe for coffee and brunch on weekends around midday.",
+      "kind": "social",
+      "confidence": 0.85,
+      "status": "active",
+      "time_window": "11:00-13:00",
+      "days": [
+        5,
+        6
+      ],
+      "created_ms": 1793764029649,
+      "updated_ms": 1793764029649,
+      "evidence_count": 3,
+      "about": [],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "cafe-20261101T112320-0001",
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": "2026-11-01",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "cafe-20261101T112340-0002",
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": "2026-11-01",
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-24-1130",
+          "day_id": "2026-10-24",
+          "local_date": null,
+          "text": "Meeting Alex at the cafe for brunch."
+        }
+      ]
+    }
+  ],
+  "long_term_memories": [
+    {
+      "memory_id": "ltm-canteen-noodles-liked",
+      "statement": "Likes noodles at the university canteen for lunch.",
+      "kind": "preference",
+      "confidence": 0.95,
+      "status": "active",
+      "created_ms": 1793764047580,
+      "updated_ms": 1793764047580,
+      "evidence_count": 3,
+      "about": [
+        "noodle",
+        "food court"
+      ],
+      "from_patterns": [
+        "canteen-noodle-preference"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "food_court-20261019T113640-0002",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "food_court-20261019T113700-0003",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-19-1142",
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": "I really like the noodles at the canteen here."
+        }
+      ]
+    },
+    {
+      "memory_id": "ltm-weekend-cafe-social",
+      "statement": "Meets friends such as Alex at a cafe for coffee and brunch on weekends around midday.",
+      "kind": "relationship",
+      "confidence": 0.85,
+      "status": "active",
+      "created_ms": 1793764186835,
+      "updated_ms": 1793764186835,
+      "evidence_count": 7,
+      "about": [
+        "cafe"
+      ],
+      "from_patterns": [
+        "weekend-cafe-brunch-social"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "cafe-20261101T112320-0001",
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": "2026-11-01",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "cafe-20261101T112340-0002",
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": "2026-11-01",
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-31",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-25",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-24-1130",
+          "day_id": "2026-10-24",
+          "local_date": null,
+          "text": "Meeting Alex at the cafe for brunch."
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-24",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    },
+    {
+      "memory_id": "ltm-weekday-uni-schedule",
+      "statement": "Follows a weekday university schedule: morning classes 08:40-11:30, canteen lunch 11:35-12:30, library study 12:40-16:30 at campus near 1.3442, 103.6810.",
+      "kind": "routine",
+      "confidence": 0.95,
+      "status": "active",
+      "created_ms": 1793764159887,
+      "updated_ms": 1793764159887,
+      "evidence_count": 13,
+      "about": [
+        "classroom",
+        "food court",
+        "library"
+      ],
+      "from_patterns": [
+        "university-campus-south",
+        "afternoon-library-study",
+        "midday-canteen-lunch",
+        "morning-classes-weekdays"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261030T084400-0000",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261030T084440-0002",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261030T084520-0004",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-29",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-28",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-27",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-26",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-23",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-22",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-21",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-20",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    },
+    {
+      "memory_id": "ltm-home-university-bus-commute",
+      "statement": "Commutes by bus between home (1.3483, 103.6831) and university campus (1.3442, 103.6810), outbound weekday mornings around 08:10-08:40.",
+      "kind": "routine",
+      "confidence": 0.95,
+      "status": "active",
+      "created_ms": 1793763960455,
+      "updated_ms": 1793763960455,
+      "evidence_count": 23,
+      "about": [
+        "classroom",
+        "bus interior",
+        "bedroom"
+      ],
+      "from_patterns": [
+        "university-campus-south",
+        "home-base-north",
+        "evening-bus-return-mon-wed-fri",
+        "morning-bus-commute"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T081700-0000",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T081720-0001",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T081800-0003",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T163220-0001",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T163240-0002",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T163320-0004",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261030T084400-0000",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261030T084440-0002",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261030T084520-0004",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "home-20261101T090200-0000",
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": "2026-11-01",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "home-20261101T090220-0001",
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": "2026-11-01",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "home-20261101T090300-0003",
+          "note_id": null,
+          "day_id": "2026-11-01",
+          "local_date": "2026-11-01",
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-29",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-28",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-27",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-26",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-23",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-22",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-21",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-20",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-19-0815",
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": "Taking the bus to uni again, the traffic was bad today."
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    },
+    {
+      "memory_id": "ltm-laptop-study-work",
+      "statement": "Studies and works on a laptop with notebook and pen in classrooms and the library on weekdays.",
+      "kind": "routine",
+      "confidence": 0.93,
+      "status": "active",
+      "created_ms": 1793764057692,
+      "updated_ms": 1793764057692,
+      "evidence_count": 3,
+      "about": [
+        "classroom",
+        "library",
+        "laptop",
+        "notebook"
+      ],
+      "from_patterns": [
+        "laptop-notebook-study-work"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261019T084400-0000",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "classroom-20261019T084500-0003",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-21-1240",
+          "day_id": "2026-10-21",
+          "local_date": null,
+          "text": "Need to finish the assignment in the library this afternoon."
+        }
+      ]
+    },
+    {
+      "memory_id": "ltm-evening-bus-return",
+      "statement": "Returns home by bus around 16:30-17:00 on Monday, Wednesday and Friday; stays for gym on Tuesday and Thursday afternoons.",
+      "kind": "routine",
+      "confidence": 0.92,
+      "status": "active",
+      "created_ms": 1793764169621,
+      "updated_ms": 1793764169621,
+      "evidence_count": 9,
+      "about": [
+        "bus interior"
+      ],
+      "from_patterns": [
+        "evening-bus-return-mon-wed-fri"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T163220-0001",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T163240-0002",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "bus-20261019T163320-0004",
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": "2026-10-19",
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-28",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-26",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-23",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-21",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-19",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    },
+    {
+      "memory_id": "ltm-tue-thu-gym",
+      "statement": "Goes to the gym around 16:30-17:40 on Tuesdays and Thursdays.",
+      "kind": "routine",
+      "confidence": 0.9,
+      "status": "active",
+      "created_ms": 1793764177706,
+      "updated_ms": 1793764177706,
+      "evidence_count": 4,
+      "about": [
+        "gym"
+      ],
+      "from_patterns": [
+        "evening-gym-tue-thu"
+      ],
+      "evidence": [
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-29",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-27",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-22",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-20",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    },
+    {
+      "memory_id": "ltm-friday-supermarket",
+      "statement": "Shops at the supermarket on Friday evenings, including buying milk.",
+      "kind": "routine",
+      "confidence": 0.8,
+      "status": "active",
+      "created_ms": 1793764196755,
+      "updated_ms": 1793764196755,
+      "evidence_count": 5,
+      "about": [
+        "supermarket"
+      ],
+      "from_patterns": [
+        "friday-supermarket-milk-shop"
+      ],
+      "evidence": [
+        {
+          "label": "Frame",
+          "frame_id": "supermarket-20261030T181300-0000",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Frame",
+          "frame_id": "supermarket-20261030T181320-0001",
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": "2026-10-30",
+          "text": null
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-30",
+          "local_date": null,
+          "text": null
+        },
+        {
+          "label": "Note",
+          "frame_id": null,
+          "note_id": "note-2026-10-23-1815",
+          "day_id": "2026-10-23",
+          "local_date": null,
+          "text": "Remind me to buy milk at the supermarket."
+        },
+        {
+          "label": "Day",
+          "frame_id": null,
+          "note_id": null,
+          "day_id": "2026-10-23",
+          "local_date": null,
+          "text": null
+        }
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "note_id": "note-2026-10-19-0815",
+      "ts_ms": 1792368900000,
+      "timestamp": "2026-10-19T00:15:00Z",
+      "text": "Taking the bus to uni again, the traffic was bad today.",
+      "kind": "note",
+      "day_id": "2026-10-19"
+    },
+    {
+      "note_id": "note-2026-10-19-1142",
+      "ts_ms": 1792381320000,
+      "timestamp": "2026-10-19T03:42:00Z",
+      "text": "I really like the noodles at the canteen here.",
+      "kind": "preference",
+      "day_id": "2026-10-19"
+    },
+    {
+      "note_id": "note-2026-10-21-1240",
+      "ts_ms": 1792557600000,
+      "timestamp": "2026-10-21T04:40:00Z",
+      "text": "Need to finish the assignment in the library this afternoon.",
+      "kind": "note",
+      "day_id": "2026-10-21"
+    },
+    {
+      "note_id": "note-2026-10-21-1910",
+      "ts_ms": 1792581000000,
+      "timestamp": "2026-10-21T11:10:00Z",
+      "text": "Picking up my prescription at the clinic.",
+      "kind": "note",
+      "day_id": "2026-10-21"
+    },
+    {
+      "note_id": "note-2026-10-23-1815",
+      "ts_ms": 1792750500000,
+      "timestamp": "2026-10-23T10:15:00Z",
+      "text": "Remind me to buy milk at the supermarket.",
+      "kind": "reminder",
+      "day_id": "2026-10-23"
+    },
+    {
+      "note_id": "note-2026-10-24-1130",
+      "ts_ms": 1792812600000,
+      "timestamp": "2026-10-24T03:30:00Z",
+      "text": "Meeting Alex at the cafe for brunch.",
+      "kind": "note",
+      "day_id": "2026-10-24"
+    }
+  ],
+  "remember": [
+    "Likes noodles at the university canteen for lunch.",
+    "Meets friends such as Alex at a cafe for coffee and brunch on weekends around midday.",
+    "Follows a weekday university schedule: morning classes 08:40-11:30, canteen lunch 11:35-12:30, library study 12:40-16:30 at campus near 1.3442, 103.6810.",
+    "Commutes by bus between home (1.3483, 103.6831) and university campus (1.3442, 103.6810), outbound weekday mornings around 08:10-08:40.",
+    "Studies and works on a laptop with notebook and pen in classrooms and the library on weekdays.",
+    "Returns home by bus around 16:30-17:00 on Monday, Wednesday and Friday; stays for gym on Tuesday and Thursday afternoons.",
+    "Goes to the gym around 16:30-17:40 on Tuesdays and Thursdays.",
+    "Shops at the supermarket on Friday evenings, including buying milk."
+  ]
+}

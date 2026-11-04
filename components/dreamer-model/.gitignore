@@ -1,0 +1,36 @@
+dream_output/*
+!dream_output/dream_readable.txt
+!dream_output/dream_report.md
+!dream_output/dream_output.json
+
+data/
+*.sqlite
+*.sqlite3
+*.rdb
+*.db
+.env
+.env.*
+*.env
+!.env.example
+.venv/
+venv/
+
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# -----------------------------------------------------------------------------
+# Tooling caches, logs, OS noise
+# -----------------------------------------------------------------------------
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.log
+.DS_Store

@@ -1,0 +1,279 @@
+==============================================================================
+  VIXY DREAMER — READABLE SUMMARY
+==============================================================================
+
+  graph      : vixy_dreamer
+  session    : wearer-01
+  observed   : 14 days, 20,618 frames, 6 spoken notes, 56 classes
+  coverage   : Mon 19 Oct 2026 07:40  ->  Sun 01 Nov 2026 14:55
+  dreamed    : 13 patterns, 8 long-term memories
+
+  This file reads top to bottom: first what the wearable provided,
+  then what the dreamer concluded from it.
+
+==============================================================================
+  PART 1 — WHAT WAS PROVIDED
+==============================================================================
+
+  The perception layer emitted one record per sampled frame. This is
+  the whole raw input; nothing below is inferred. Example node:
+
+  {
+    "frame_id": "home-20261019T074000-0000",
+    "timestamp": "2026-10-18T23:40:00+00:00",
+    "classes": [
+      {
+        "class": "bedroom",
+        "count": 1,
+        "confidence": 0.75
+      },
+      {
+        "class": "lamp",
+        "count": 1,
+        "confidence": 0.65
+      },
+      {
+        "class": "pillow",
+        "count": 1,
+        "confidence": 0.65
+      },
+      {
+        "class": "sofa",
+        "count": 3,
+        "confidence": 0.82
+      },
+      {
+        "class": "wardrobe",
+        "count": 3,
+        "confidence": 0.66
+      }
+    ],
+    "gps": {
+      "lat": 1.3483,
+      "lon": 103.6831
+    }
+  }
+
+  Those records went through context-engine into SQLite, then into
+  the graph as frames. 20,618 frames over 14 days is too much to
+  read one by one, so here is the same data as a day-by-day diary.
+
+------------------------------------------------------------------------------
+  2026-10-19   (1,661 frames)
+------------------------------------------------------------------------------
+    07:40-08:09  at home              bedroom, pillow, television, wardrobe
+    08:15  NOTE        "Taking the bus to uni again, the traffic was bad today."
+    08:17-08:41  on the bus           bus interior, window, seat, bus
+    08:44-11:36  in class             chair, classroom, pen, whiteboard
+    11:36-12:30  at the food court    chair, tray, food court, noodle
+    11:42  PREFERENCE  "I really like the noodles at the canteen here."
+    12:38-16:27  in the library       library, laptop, book, notebook
+    16:35-16:56  on the bus           seat, window, bus, bus interior
+    17:04-18:03  at home              wardrobe, lamp, pillow, bedroom
+
+------------------------------------------------------------------------------
+  2026-10-20   (1,766 frames)
+------------------------------------------------------------------------------
+    07:45-08:17  at home              bedroom, pillow, bed, sofa
+    08:17-08:44  on the bus           bus interior, seat, bus, window
+    08:44-11:37  in class             notebook, classroom, pen, whiteboard
+    11:39-12:31  at the food court    plate, food court, bowl, chair
+    12:38-16:25  in the library       table, bookcase, chair, library
+    16:30-17:39  at the gym           barbell, gym, treadmill, mirror
+    17:42-18:41  at home              bedroom, sofa, wardrobe, pillow
+
+------------------------------------------------------------------------------
+  2026-10-21   (1,726 frames)
+------------------------------------------------------------------------------
+    07:43-08:12  at home              pillow, lamp, sofa, bedroom
+    08:16-08:39  on the bus           window, seat, bus interior, bus
+    08:42-11:27  in class             pen, chair, classroom, notebook
+    11:35-12:29  at the food court    food court, plate, chopstick, noodle
+    12:33-16:22  in the library       table, library, chair, book
+    12:40  NOTE        "Need to finish the assignment in the library this afternoon."
+    16:26-16:50  on the bus           bus interior, bus, window, seat
+    17:02-18:00  at home              lamp, bedroom, wardrobe, television
+    18:01-19:18  elsewhere            nurse, poster, handbag, wardrobe
+    19:10  NOTE        "Picking up my prescription at the clinic."
+    19:19-19:47  at a clinic          nurse, poster, chair, clinic
+
+------------------------------------------------------------------------------
+  2026-10-22   (1,759 frames)
+------------------------------------------------------------------------------
+    07:42-08:09  at home              pillow, bed, television, bedroom
+    08:14-08:38  on the bus           bus interior, bus, window, seat
+    08:41-11:30  in class             pen, classroom, laptop, projector
+    11:33-12:27  at the food court    food court, tray, cup, bowl
+    12:40-16:29  in the library       chair, library, bookcase, laptop
+    16:32-17:41  at the gym           barbell, dumbbell, mirror, gym
+    17:44-18:43  at home              wardrobe, pillow, sofa, bed
+
+------------------------------------------------------------------------------
+  2026-10-23   (1,714 frames)
+------------------------------------------------------------------------------
+    07:39-08:07  at home              bedroom, sofa, television, pillow
+    08:07-08:14  elsewhere            bed, pillow, lamp, television
+    08:18-08:38  on the bus           bus interior, bus, window, seat
+    08:41-11:30  in class             classroom, projector, chair, pen
+    11:36-12:30  at the food court    plate, noodle, food court, bowl
+    12:38-16:27  in the library       library, laptop, book, chair
+    16:35-16:59  on the bus           bus interior, bus, seat, window
+    17:04-18:01  at home              bedroom, television, sofa, wardrobe
+    18:13-18:35  at the supermarket   supermarket, shelf, shopping cart, fruit
+    18:15  REMINDER    "Remind me to buy milk at the supermarket."
+
+------------------------------------------------------------------------------
+  2026-10-24   (870 frames)
+------------------------------------------------------------------------------
+    09:01-10:00  at home              bedroom, bed, pillow, lamp
+    10:13-11:10  in a park            park, dog, bench, tree
+    11:23-12:32  at a cafe            cafe, chair, cake, table
+    11:30  NOTE        "Meeting Alex at the cafe for brunch."
+    12:56-14:55  at home              bed, lamp, bedroom, sofa
+
+------------------------------------------------------------------------------
+  2026-10-25   (504 frames)
+------------------------------------------------------------------------------
+    09:05-10:04  at home              bedroom, lamp, television, sofa
+    10:14-11:11  in a park            tree, bench, grass, dog
+    11:20-12:17  at a cafe            chair, cafe, cup, table
+
+==============================================================================
+  PART 2 — WHAT THE DREAMER CONCLUDED
+==============================================================================
+
+  13 patterns and 8 long-term memories were written to the graph.
+  Each one is linked to the frames, notes or days that support it.
+
+  A. LONG-TERM MEMORY — what Vixy will remember ------------------------------
+
+   1. Follows a weekday university schedule: morning classes 08:40-11:30, canteen lunch 11:35-12:30, library study 12:40-16:30 at campus near 1.3442, 103.6810.
+      routine | confidence 0.95 | 13 evidence item(s)
+      distilled from: university-campus-south, afternoon-library-study, midday-canteen-lunch, morning-classes-weekdays
+      id: ltm-weekday-uni-schedule
+
+   2. Commutes by bus between home (1.3483, 103.6831) and university campus (1.3442, 103.6810), outbound weekday mornings around 08:10-08:40.
+      routine | confidence 0.95 | 23 evidence item(s)
+      distilled from: university-campus-south, home-base-north, evening-bus-return-mon-wed-fri, morning-bus-commute
+      id: ltm-home-university-bus-commute
+
+   3. Studies and works on a laptop with notebook and pen in classrooms and the library on weekdays.
+      routine | confidence 0.93 | 3 evidence item(s)
+      distilled from: laptop-notebook-study-work
+      id: ltm-laptop-study-work
+
+   4. Returns home by bus around 16:30-17:00 on Monday, Wednesday and Friday; stays for gym on Tuesday and Thursday afternoons.
+      routine | confidence 0.92 | 9 evidence item(s)
+      distilled from: evening-bus-return-mon-wed-fri
+      id: ltm-evening-bus-return
+
+   5. Goes to the gym around 16:30-17:40 on Tuesdays and Thursdays.
+      routine | confidence 0.90 | 4 evidence item(s)
+      distilled from: evening-gym-tue-thu
+      id: ltm-tue-thu-gym
+
+   6. Shops at the supermarket on Friday evenings, including buying milk.
+      routine | confidence 0.80 | 5 evidence item(s)
+      distilled from: friday-supermarket-milk-shop
+      id: ltm-friday-supermarket
+
+   7. Likes noodles at the university canteen for lunch.
+      preference | confidence 0.95 | 3 evidence item(s)
+      distilled from: canteen-noodle-preference
+      id: ltm-canteen-noodles-liked
+
+   8. Meets friends such as Alex at a cafe for coffee and brunch on weekends around midday.
+      relationship | confidence 0.85 | 7 evidence item(s)
+      distilled from: weekend-cafe-brunch-social
+      id: ltm-weekend-cafe-social
+
+  B. PATTERNS — what recurs, and the evidence behind it ----------------------
+
+   1. Eats lunch at the food court/canteen around 11:35-12:30 on weekdays.
+      routine | confidence 0.95 | 11:35-12:30 | Mon, Tue, Wed, Thu, Fri
+      evidence (10): Day:2026-10-30, Day:2026-10-29, Day:2026-10-28, Day:2026-10-27 +6 more
+      id: midday-canteen-lunch
+
+   2. Studies in the library around 12:40-16:30 on weekdays.
+      routine | confidence 0.93 | 12:40-16:30 | Mon, Tue, Wed, Thu, Fri
+      evidence (10): Day:2026-10-30, Day:2026-10-29, Day:2026-10-28, Day:2026-10-27 +6 more
+      id: afternoon-library-study
+
+   3. Goes to the gym around 16:30-17:40 on Tuesdays and Thursdays.
+      routine | confidence 0.90 | 16:30-17:40 | Tue, Thu
+      evidence (4): Day:2026-10-29, Day:2026-10-27, Day:2026-10-22, Day:2026-10-20
+      id: evening-gym-tue-thu
+
+   4. Attends classes in the classroom around 08:40-11:30 on weekdays.
+      schedule | confidence 0.95 | 08:40-11:30 | Mon, Tue, Wed, Thu, Fri
+      evidence (10): Day:2026-10-30, Day:2026-10-29, Day:2026-10-28, Day:2026-10-27 +6 more
+      id: morning-classes-weekdays
+
+   5. Takes the bus to university around 08:10-08:40 on weekdays.
+      commute | confidence 0.97 | 08:10-08:40 | Mon, Tue, Wed, Thu, Fri
+      evidence (14): Frame:bus-20261019T081700-0000, Frame:bus-20261019T081720-0001, Frame:bus-20261019T081800-0003, Day:2026-10-30 +10 more
+      id: morning-bus-commute
+
+   6. Returns home by bus around 16:30-17:00 on Monday, Wednesday and Friday.
+      commute | confidence 0.92 | 16:30-17:00 | Mon, Wed, Fri
+      evidence (3): Frame:bus-20261019T163220-0001, Frame:bus-20261019T163240-0002, Frame:bus-20261019T163320-0004
+      id: evening-bus-return-mon-wed-fri
+
+   7. Spends weekdays on university campus near 1.3442, 103.6810 for classes and library study.
+      location | confidence 0.95 | 08:40-17:00 | Mon, Tue, Wed, Thu, Fri
+      evidence (3): Frame:classroom-20261030T084400-0000, Frame:classroom-20261030T084440-0002, Frame:classroom-20261030T084520-0004
+      id: university-campus-south
+
+   8. Lives at home base near 1.3483, 103.6831, present mornings and nights daily.
+      location | confidence 0.95 | 07:00-08:00 | Mon, Tue, Wed, Thu, Fri, Sat, Sun
+      evidence (3): Frame:home-20261101T090200-0000, Frame:home-20261101T090220-0001, Frame:home-20261101T090300-0003
+      id: home-base-north
+
+   9. Works and studies on a laptop with a notebook and pen, in classrooms and the library on weekdays.
+      activity | confidence 0.95 | 08:40-16:30 | Mon, Tue, Wed, Thu, Fri
+      evidence (3): Frame:classroom-20261019T084400-0000, Frame:classroom-20261019T084500-0003, Note:note-2026-10-21-1240
+      id: laptop-notebook-study-work
+
+  10. Shops at the supermarket on Friday evenings, including buying milk.
+      activity | confidence 0.80 | 18:00-19:00 | Fri
+      evidence (3): Frame:supermarket-20261030T181300-0000, Frame:supermarket-20261030T181320-0001, Note:note-2026-10-23-1815
+      id: friday-supermarket-milk-shop
+
+  11. Prefers noodles at the canteen food court for weekday lunch, as stated on 2026-10-19 and seen on 10 weekdays.
+      preference | confidence 0.95 | 11:30-12:30 | Mon, Tue, Wed, Thu, Fri
+      evidence (3): Frame:food_court-20261019T113640-0002, Frame:food_court-20261019T113700-0003, Note:note-2026-10-19-1142
+      id: canteen-noodle-preference
+
+  12. Meets friends such as Alex at a cafe for coffee and brunch on weekends around midday.
+      social | confidence 0.85 | 11:00-13:00 | Sat, Sun
+      evidence (3): Frame:cafe-20261101T112320-0001, Frame:cafe-20261101T112340-0002, Note:note-2026-10-24-1130
+      id: weekend-cafe-brunch-social
+
+  13. Visited a clinic once on the evening of 2026-10-21; one-off, not a routine.
+      anomaly | confidence 0.60 | 19:00-20:00 | Wed
+      evidence (2): Frame:clinic-20261021T191900-0003, Note:note-2026-10-21-1910
+      id: clinic-visit-one-off-oct21
+
+  C. PLAIN ANSWER — things Vixy now knows ------------------------------------
+
+    * Likes noodles at the university canteen for lunch.
+    * Meets friends such as Alex at a cafe for coffee and brunch on weekends around midday.
+    * Follows a weekday university schedule: morning classes 08:40-11:30, canteen lunch 11:35-12:30, library study 12:40-16:30 at campus near 1.3442, 103.6810.
+    * Commutes by bus between home (1.3483, 103.6831) and university campus (1.3442, 103.6810), outbound weekday mornings around 08:10-08:40.
+    * Studies and works on a laptop with notebook and pen in classrooms and the library on weekdays.
+    * Returns home by bus around 16:30-17:00 on Monday, Wednesday and Friday; stays for gym on Tuesday and Thursday afternoons.
+    * Goes to the gym around 16:30-17:40 on Tuesdays and Thursdays.
+    * Shops at the supermarket on Friday evenings, including buying milk.
+
+==============================================================================
+  WHERE THIS LIVES
+==============================================================================
+
+  live graph     : FalkorDB graph 'vixy_dreamer'
+  raw input      : dream_output/dreamer_export.jsonl
+  full structure : dream_output/dream_output.json
+  this file      : dream_output/dream_readable.txt
+
+  To check any conclusion by hand, query the graph:
+    MATCH (m:LongTermMemory)-[:SUPPORTED_BY]->(e)
+    RETURN m.statement, labels(e)[0], e.frame_id, e.local_date

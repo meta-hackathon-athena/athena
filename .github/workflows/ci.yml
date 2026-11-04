@@ -1,0 +1,96 @@
+name: ci
+
+# All components live in this repository, so no cross-repository token is needed.
+# Offline: model keys are empty and no paid API is called.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      audiovisual:
+        description: "Also run the optional M3 audiovisual job (installs torch, downloads public YOLO/Whisper weights)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  MODEL_API_KEY: ""
+  BASETEN_API_KEY: ""
+
+jobs:
+  tests:
+    name: unit + integration (context-engine, dreamer-model, runtime)
+    runs-on: ubuntu-24.04
+    services:
+      falkordb:
+        # same pinned image as docker-compose.yml
+        image: falkordb/falkordb@sha256:0fb85036662ce3d1206530a38fdf7df5a92b1fb31ad23087f8d4e89038ce0812
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      VIXY_TEST_FALKORDB_URL: redis://localhost:6379
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: uv sync --frozen
+      - name: unit (scripts/test.sh unit)
+        run: ./scripts/test.sh unit
+      - name: integration (scripts/test.sh integration)
+        run: ./scripts/test.sh integration
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs
+          path: logs/
+          if-no-files-found: ignore
+
+  context-engine-py310:
+    # Context Engine supports Python >= 3.10 on its own (as in its original CI matrix).
+    name: context-engine standalone (Python 3.10)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.10"
+      - name: pytest
+        run: |
+          uv venv --python 3.10 .venv-ce
+          uv pip install --python .venv-ce -e "components/context-engine[api,dev]"
+          .venv-ce/bin/pytest -q components/context-engine
+
+  audiovisual:
+    # Optional and slow: real local YOLO11n + Whisper inference on a generated MP4 fixture
+    # (public image + espeak speech). Run on demand; the same level runs locally with `make smoke-av`.
+    name: M3 audiovisual (optional, real local models)
+    if: github.event_name == 'workflow_dispatch' && inputs.audiovisual
+    runs-on: ubuntu-24.04
+    services:
+      falkordb:
+        image: falkordb/falkordb@sha256:0fb85036662ce3d1206530a38fdf7df5a92b1fb31ad23087f8d4e89038ce0812
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      VIXY_TEST_FALKORDB_URL: redis://localhost:6379
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg espeak
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: uv sync --frozen --extra perception
+      - name: audiovisual (scripts/test.sh av)
+        run: ./scripts/test.sh av
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: av-logs
+          path: logs/
+          if-no-files-found: ignore

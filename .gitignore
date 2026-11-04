@@ -1,0 +1,54 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv
+venv/
+
+# Secrets: never commit real credentials (see .env.example)
+.env
+.env.*
+*.env
+!.env.example
+
+# Local state: Context Engine / runtime SQLite, embedded FalkorDB, any databases
+data/
+*.rdb
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+
+# Logs and diagnostics (make targets write here)
+logs/
+*.log
+
+# Perception inputs, models and outputs are local user data: recordings, transcripts,
+# caches (cache/*.json), replay monitors (replay.jsonl), summaries and model weights
+demo/inputs/**
+demo/outputs/**
+!demo/inputs/.gitkeep
+*.mp4
+*.mov
+*.m4a
+*.mp3
+*.wav
+*.aiff
+*.pt
+*.onnx
+*.safetensors
+
+# Frontend (reserved for the app)
+node_modules/
+.expo/
+.next/
+
+.DS_Store

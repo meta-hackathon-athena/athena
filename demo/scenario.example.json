@@ -1,0 +1,41 @@
+{
+  "schema_version": "vixy.scenario.v1",
+  "user_id": "m3_scenario_01",
+  "disposable": true,
+  "playback_speed": 0,
+  "tick_seconds": 60,
+  "perception": {
+    "fps": 1,
+    "vision_model": "yolo11n.pt",
+    "vision_device": "cpu",
+    "confidence": 0.35,
+    "image_size": 640,
+    "asr_model": "base.en",
+    "asr_device": "cpu",
+    "language": "en",
+    "threads": 4
+  },
+  "recordings": [
+    {
+      "id": "day1",
+      "session_id": "m3_scenario_01_day1",
+      "video": "day1.mp4",
+      "recorded_at": null,
+      "simulated_start": "2026-11-02T18:00:00+08:00",
+      "gps": [],
+      "speakers": [],
+      "dream_after": true
+    },
+    {
+      "id": "day2",
+      "session_id": "m3_scenario_01_day2",
+      "video": "day2.mp4",
+      "recorded_at": null,
+      "simulated_start": "2026-11-03T18:00:00+08:00",
+      "gps": [],
+      "speakers": [],
+      "dream_after": true
+    }
+  ],
+  "dream_boundaries": []
+}
