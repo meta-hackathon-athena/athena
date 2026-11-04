@@ -73,15 +73,23 @@ uv run python -m vixy --user app_demo --state-dir data/app_demo decisions --limi
 "someone mentioned Alex is allergic to peanuts" when you plan to buy peanuts for Alex (attributed,
 not certain), and it refuses to invent a memory it doesn't have.
 
-## What is real today
+## Local first, Muse for the hackathon
 
-| | |
-|---|---|
-| Built and tested | perception (YOLO11n + Whisper, local), Context Engine, Episode Writer, Active Agent, FalkorDB memory, Dreamer, `/v1` API, web app |
-| Tests | `make test` (unit, offline) · `make test-integration` (FalkorDB server, 14 agent scenarios, demos, HTTP) · `make smoke-av` (MP4 → YOLO + Whisper → replay) |
-| Hardware | an RGB-D camera and a RUBIK Pi 3 (Qualcomm QCS6490) are the target; perception runs on a laptop CPU today, and an MP4 simulator replays recordings |
-| Models | no paid model by default; Meta Muse is an opt-in for the Dreamer and `/ask` |
-| Data | memory-aware behaviour is shown on synthetic days; our own short recordings process end to end but don't produce long-term memories yet |
+Athena is meant to run on hardware you own. Your day is the most private data there is, so the
+parts that watch and react in real time (perception and the Active Agent) are small, rules-first
+and built to run on a pocket board (target: RUBIK Pi 3, Qualcomm QCS6490) with nothing leaving it.
+
+For this hackathon the reasoning-heavy steps are built on **Meta Muse**: the Dreamer's nightly
+focus rounds (read-only graph queries plus validated write tools) and natural-language recall for
+`/ask`. Add `MODEL_API_KEY` to `.env`, use the FalkorDB server (`make falkordb`, so the Dreamer
+shares the graph) and dream online:
+
+```bash
+uv run python -m prod_dreamer_model.cli --layout unified --user app_demo dream --online \
+    --history-db data/app_demo/vixy_events.sqlite3
+```
+
+Without a key, everything above still runs offline with rule-based fallbacks.
 
 ## Repository
 
