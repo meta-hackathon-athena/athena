@@ -81,12 +81,10 @@ and built to run on a pocket board (target: RUBIK Pi 3, Qualcomm QCS6490) with n
 
 For this hackathon the reasoning-heavy steps are built on **Meta Muse**: the Dreamer's nightly
 focus rounds (read-only graph queries plus validated write tools) and natural-language recall for
-`/ask`. Add `MODEL_API_KEY` to `.env`, use the FalkorDB server (`make falkordb`, so the Dreamer
-shares the graph) and dream online:
+`/ask`. Put your key in `.env` (`MODEL_API_KEY=...`) and run the Dreamer on Muse:
 
 ```bash
-uv run python -m prod_dreamer_model.cli --layout unified --user app_demo dream --online \
-    --history-db data/app_demo/vixy_events.sqlite3
+uv run python -m vixy --user app_demo --state-dir data/app_demo dream --online
 ```
 
 Without a key, everything above still runs offline with rule-based fallbacks.
