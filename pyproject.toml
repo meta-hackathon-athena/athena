@@ -1,7 +1,7 @@
 [project]
 name = "metahackathon"
 version = "0.1.0"
-description = "Vixy integrated runtime: context-engine -> Episode Writer -> Active Agent, one FalkorDB graph per user shared with the Dreamer"
+description = "Athena (formerly Vixy) integrated runtime: context-engine -> Episode Writer -> Active Agent, one FalkorDB graph per user shared with the Dreamer"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

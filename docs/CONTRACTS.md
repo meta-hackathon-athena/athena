@@ -1,4 +1,4 @@
-# Vixy event contracts and conventions (Milestones 1 and 2)
+# Athena event contracts and conventions (Milestones 1 and 2)
 
 Milestone 2 adds no change to the event contracts. New versioned contracts:
 
@@ -33,7 +33,7 @@ Their `extra="forbid"` rule still rejects unknown fields. The fields Context Eng
 | Future separation | Give each device or recording session its own id (e.g. `demo.glasses-01`) and list it under the user. Events keep their `session_id`, and graph nodes store both `session_id` and `user_id`, so provenance survives the split. |
 | Event id | Context Engine `event_id`, stable across retries. Video: `<stream>:<frame_id>` (default stream `cam0`, Ara's convention). Audio: `asr:<recording_id or stream>:<segment_id>` (Aryan's adapter convention). |
 | Graph ids | Derived deterministically: Note `note_<sha1(event_id)>`; Visit `vis_<sha1(user:first_event_id:start)>`; Commitment `cmt_<sha1(title:start)>`; Question `qst_<sha1(dedup_key)>`; Decision/AgentLog `dec_<sha1(dedup_key:ts)>`; Person `per_<name>`; memories by content (GRAPH_SCHEMA.md). |
-| Product name | **Vixy**, including the wake word ("Vixy, …"). "Veyra" is still accepted as a legacy wake word; `VEYRA_*` environment variables are honoured as fallbacks for their `VIXY_*` replacements. |
+| Product name | **Athena** (formerly Vixy). Internal identifiers keep the `vixy` name: the wake word implemented by the agent is still "Vixy, …", and "Veyra" is still accepted as a legacy wake word; `VEYRA_*` environment variables are honoured as fallbacks for their `VIXY_*` replacements. |
 
 ## Time
 

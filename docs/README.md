@@ -1,6 +1,6 @@
-# Vixy documentation
+# Athena documentation
 
-This directory is the canonical project documentation of the Vixy monorepo. Write future implementation reports directly to `reports/`.
+This directory is the canonical project documentation of the Athena monorepo. Write future implementation reports directly to `reports/`.
 
 - [Architecture](ARCHITECTURE.md): monorepo layout, implemented runtime and component responsibilities.
 - [Monorepo migration](MONOREPO_MIGRATION.md): source repositories and SHAs, file mapping, dependency changes, decisions.
