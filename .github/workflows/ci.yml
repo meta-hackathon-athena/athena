@@ -96,4 +96,3 @@ jobs:
           name: av-logs
           path: logs/
           if-no-files-found: ignore
-# Retry workflow registration after GitHub incident

@@ -106,19 +106,23 @@ These ran on the exact staged tree (154 files):
 - Real recordings produce no long-term memories and no proactive notifications. Memory-aware behaviour is shown on synthetic data only.
 - Meta Muse generation, tool calling and paid usage remain untested live.
 - **Slow pytest exit with the embedded graph.** Processes that open embedded falkordblite instances take about 30 s to several minutes to exit after the tests finish, while the redislite servers shut down. Measured on `tests/test_store.py`, 8 tests reported in 1.1 s: wall time was 34 s in the original master-repo and 31 s in the monorepo. So the delay is pre-existing, not caused by the migration, and it is why `make test` takes several minutes for about 1 minute of tests.
-- The CI audiovisual job (Linux, espeak speech, CPU torch) is optional and hasn't run on GitHub yet. Run it with `gh workflow run ci.yml -f audiovisual=true`. Locally, `make smoke-av` passes.
+- The M3 audiovisual level was validated locally only, not by GitHub Actions; see section 8.
 
 ## 8. GitHub Actions
 
 The repository was created during GitHub's 2026-11-04 incident, and GitHub never processed its first pushes: no events, no workflow registered. Opening PR #1 (`fix/register-github-actions`) registered the `ci` workflow.
 
-- **First run (41833706809):** failed on `tests/test_m3.py::test_corrupt_media_and_reset_protection`. The runner had no `ffprobe`, so the error was `required executable missing` instead of `ffprobe failed`. This was a CI environment gap, not a code bug; the `tests` job now installs `ffmpeg`.
-- **Second run (41834751464): success.**
+- **First run (41833706809): failure.** It failed on `tests/test_m3.py::test_corrupt_media_and_reset_protection`. The runner had no `ffprobe`, so the error was `required executable missing` instead of `ffprobe failed`. This was a CI environment gap, not a code bug; the `tests` job now installs `ffmpeg`.
+- **Second run (41834751464): success.** In this run the unit level also ran the server variants, because the job sets `VIXY_TEST_FALKORDB_URL`. `scripts/test.sh unit` now clears that variable, so the unit level is embedded-only everywhere, matching the local runs, and the server variants run only in the integration level.
+- **Latest successful run on the PR (41836742363, commit `0b2bc70`): success.** The following commit only removed a temporary comment from `ci.yml` and updated this section. The CI run on `main` after the merge is recorded in the PR #1 merge notes.
 
-| Job | Result |
+| Job (run 41836742363) | Result |
 |---|---|
-| unit + integration | context-engine 53, dreamer-model 63, runtime 109 passed / 11 skipped (no perception extra in CI), agent 14/14, M1 9/9, M2 18/18, HTTP smoke 11/11 |
+| unit, embedded only | context-engine 53 passed; dreamer-model 63 passed; runtime/agent/memory 94 passed, 26 skipped |
+| integration, FalkorDB service container | runtime incl. shared-server variants 109 passed, 11 skipped; Active Agent 14/14; M1 demo 9/9; M2 demo 18/18; HTTP `/v1` smoke 11/11 |
 | context-engine standalone, Python 3.10 | 53 passed |
-| M3 audiovisual (optional, manual) | not run |
+| M3 audiovisual | not run on GitHub; optional manual job, see below |
 
-In that run the unit level also ran the server variants, because the job sets `VIXY_TEST_FALKORDB_URL`. `scripts/test.sh unit` now clears that variable, so the unit level is embedded-only everywhere and the server variants run only in the integration level.
+**CI skips.** The CI environment has no perception extra (torch, Ultralytics, Whisper, OpenCV), no processed MP4 fixture and no private recordings. The skipped tests are the perception, MP4 acceptance, media and real-recording tests. All of them ran and passed **locally** (sections 2 and 5).
+
+**Audiovisual: validated locally only.** The M3 audiovisual level (MP4 → local YOLO11n + Whisper → replay acceptance, media edge cases, MP4 replay smoke) was validated **locally on macOS arm64** with `make smoke-av` / `make test-all`, not by GitHub Actions. The CI job `M3 audiovisual (optional, real local models)` exists but runs only on demand (`gh workflow run ci.yml -f audiovisual=true`), and it hasn't been run yet. On Linux it would synthesize speech with `espeak` instead of macOS `say`, so its results may differ from the local fixture.

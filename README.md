@@ -125,6 +125,8 @@ CI ([.github/workflows/ci.yml](.github/workflows/ci.yml)) runs `scripts/test.sh 
 `integration` on every push to `main` and every PR, against a FalkorDB service container. It also
 runs Context Engine standalone on Python 3.10. The audiovisual level is an optional manual job
 (`workflow_dispatch`, input `audiovisual`), because it installs torch and downloads model weights.
+It has been validated **locally** (`make smoke-av`) but has not yet run on GitHub Actions; see
+[the validation report](docs/reports/VIXY_MONOREPO_VALIDATION.md#8-github-actions).
 
 ## Logs and diagnostics
 
