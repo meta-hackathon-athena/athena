@@ -106,4 +106,19 @@ These ran on the exact staged tree (154 files):
 - Real recordings produce no long-term memories and no proactive notifications. Memory-aware behaviour is shown on synthetic data only.
 - Meta Muse generation, tool calling and paid usage remain untested live.
 - **Slow pytest exit with the embedded graph.** Processes that open embedded falkordblite instances take about 30 s to several minutes to exit after the tests finish, while the redislite servers shut down. Measured on `tests/test_store.py`, 8 tests reported in 1.1 s: wall time was 34 s in the original master-repo and 31 s in the monorepo. So the delay is pre-existing, not caused by the migration, and it is why `make test` takes several minutes for about 1 minute of tests.
-- The CI audiovisual job (Linux, espeak speech, CPU torch) is optional. Its status is in the final publication notes, not in this report.
+- The CI audiovisual job (Linux, espeak speech, CPU torch) is optional and hasn't run on GitHub yet. Run it with `gh workflow run ci.yml -f audiovisual=true`. Locally, `make smoke-av` passes.
+
+## 8. GitHub Actions
+
+The repository was created during GitHub's 2026-11-04 incident, and GitHub never processed its first pushes: no events, no workflow registered. Opening PR #1 (`fix/register-github-actions`) registered the `ci` workflow.
+
+- **First run (41833706809):** failed on `tests/test_m3.py::test_corrupt_media_and_reset_protection`. The runner had no `ffprobe`, so the error was `required executable missing` instead of `ffprobe failed`. This was a CI environment gap, not a code bug; the `tests` job now installs `ffmpeg`.
+- **Second run (41834751464): success.**
+
+| Job | Result |
+|---|---|
+| unit + integration | context-engine 53, dreamer-model 63, runtime 109 passed / 11 skipped (no perception extra in CI), agent 14/14, M1 9/9, M2 18/18, HTTP smoke 11/11 |
+| context-engine standalone, Python 3.10 | 53 passed |
+| M3 audiovisual (optional, manual) | not run |
+
+In that run the unit level also ran the server variants, because the job sets `VIXY_TEST_FALKORDB_URL`. `scripts/test.sh unit` now clears that variable, so the unit level is embedded-only everywhere and the server variants run only in the integration level.

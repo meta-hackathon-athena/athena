@@ -57,9 +57,10 @@ server_up() {
 }
 
 unit() {
-  step "context-engine tests" env FALKORDB_URL= uv run --frozen pytest -q components/context-engine
-  step "dreamer-model tests" env FALKORDB_URL= uv run --frozen pytest -q components/dreamer-model
-  step "runtime, agent and memory tests (embedded)" env FALKORDB_URL= uv run --frozen pytest -q
+  # embedded only, even where a server is configured (CI sets VIXY_TEST_FALKORDB_URL for the job)
+  step "context-engine tests" env FALKORDB_URL= VIXY_TEST_FALKORDB_URL= uv run --frozen pytest -q components/context-engine
+  step "dreamer-model tests" env FALKORDB_URL= VIXY_TEST_FALKORDB_URL= uv run --frozen pytest -q components/dreamer-model
+  step "runtime, agent and memory tests (embedded)" env FALKORDB_URL= VIXY_TEST_FALKORDB_URL= uv run --frozen pytest -q
 }
 
 integration() {
