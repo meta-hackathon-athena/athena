@@ -1,6 +1,6 @@
-# Frontend integration (Vixy app ↔ backend)
+# Frontend integration (Athena app ↔ backend)
 
-For Ara's app. This describes the backend API in the [Vixy monorepo](../README.md) as it exists at release M3: `vixy/api.py` (routes) and `vixy/ask.py` (questions). Nothing here needs a backend change. The field-level reference is [API.md](API.md), and the samples below are real responses captured from the M3 release.
+For Ara's app. This describes the backend API in the [Athena monorepo](../README.md) as it exists at release M3: `vixy/api.py` (routes) and `vixy/ask.py` (questions). Nothing here needs a backend change. The field-level reference is [API.md](API.md), and the samples below are real responses captured from the M3 release.
 
 The short version:
 
@@ -14,7 +14,7 @@ The short version:
 The first time, from a fresh clone (see the [README](../README.md#install)). Every component is in this one repository:
 
 ```bash
-git clone https://github.com/meta-hackathon-athena/vixy.git && cd vixy
+git clone https://github.com/meta-hackathon-athena/athena.git && cd athena
 make install                      # = ./scripts/bootstrap.sh: uv env, .env, FalkorDB on :6390, smoke test
 ```
 

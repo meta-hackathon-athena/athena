@@ -1,4 +1,4 @@
-# Vixy unified memory graph — `vixy.graph.v2`
+# Athena unified memory graph — `vixy.graph.v2`
 
 > **Milestone 2 (`vixy.graph.v2`)** is an additive extension of `vixy.graph.v1`: structured
 > claims on `LongTermMemory`, conservative `Person` resolution, belief relations

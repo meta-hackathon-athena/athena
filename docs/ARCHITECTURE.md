@@ -1,4 +1,4 @@
-# Vixy architecture (monorepo, Milestones 1–3)
+# Athena architecture (monorepo, Milestones 1–3)
 
 This is what is built and tested now. The target design is [VIXY_TARGET_ARCHITECTURE_EN.md](VIXY_TARGET_ARCHITECTURE_EN.md) in this canonical directory.
 The monorepo layout comes first. Then Milestone 2 (intelligence, memory and reasoning), the Milestone 1 pipeline it

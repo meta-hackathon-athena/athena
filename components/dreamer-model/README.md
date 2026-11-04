@@ -1,6 +1,6 @@
 # prod_dreamer_model
 
-The production **Vixy dreamer**: it studies a wearable user's day and turns raw
+The production **Athena dreamer**: it studies a wearable user's day and turns raw
 observation into durable, evidence-linked beliefs about them, stored in
 FalkorDB.
 
@@ -44,7 +44,7 @@ what context-engine committed; sending the same frames twice is a no-op.
 ## Install
 
 > **Monorepo:** this package lives at `components/dreamer-model/` in
-> [meta-hackathon-athena/vixy](../../README.md). From the repository root, `uv sync` installs it together
+> [meta-hackathon-athena/athena](../../README.md). From the repository root, `uv sync` installs it together
 > with Context Engine and the runtime (one uv workspace, one `uv.lock`), and `uv run pytest -q
 > components/dreamer-model` runs its tests. The commands below still work from this directory.
 
@@ -137,7 +137,7 @@ rather than repeating them.
 |---|---|---|
 | `run_cypher` | read-only | Any openCypher `MATCH`/`WITH`/`UNWIND`/`RETURN`/read `CALL`. Writes are rejected by `safe_cypher` (comments and string literals are scrubbed first, so `CONTAINS 'delete me'` is fine). Rows are capped. |
 | `write_pattern` | write | Upserts a `:Pattern` (a recurring behaviour) and links evidence. Idempotent on `pattern_id`. |
-| `write_memory` | write | Upserts a `:LongTermMemory` (a durable fact Vixy should remember), optionally linked to the patterns it was distilled from. |
+| `write_memory` | write | Upserts a `:LongTermMemory` (a durable fact Athena should remember), optionally linked to the patterns it was distilled from. |
 | `finish` | control | Ends the round and records the round summary. |
 
 Writes are validated in `tools.py`: empty statements are refused, kinds are
@@ -160,7 +160,7 @@ These steps run after every dream, including the deterministic fallback. Previou
 fallback skipped them because its writes didn't reach the tool counters, which left 7 of
 11 offline memories without evidence.
 
-## Unified Vixy graph (`--layout unified`)
+## Unified Athena graph (`--layout unified`)
 
 In the integrated system, the dreamer consolidates the shared per-user graph `vixy_<user_id>`
 written by the master-repo runtime. Its schema is `vixy.graph.v1`; see master-repo
@@ -276,7 +276,7 @@ Environment variables, read in this order (first file wins):
 |---|---|---|
 | `FALKORDB_URL` | — | `falkor://user:pass@host:port`; if unset, embedded `falkordblite` is used |
 | `DREAMER_GRAPH_NAME` | `vixy_dreamer` (legacy) / `vixy_<user>` (unified) | graph name |
-| `DREAMER_GRAPH_LAYOUT` | `legacy` | `unified` = the shared Vixy graph |
+| `DREAMER_GRAPH_LAYOUT` | `legacy` | `unified` = the shared Athena graph |
 | `DREAMER_SESSION_ID` / `DREAMER_USER_ID` (or `VIXY_USER_ID`) | `wearer-01` | session identity |
 | `DREAMER_ALLOW_INFERRED_EVIDENCE` | off | allow window-matched `backfill_evidence` |
 | `DREAMER_EVENTS_DB` | `data/prod_dreamer_events.sqlite3` | context-engine SQLite file |
@@ -341,7 +341,7 @@ tests/           no network, no server
   `memory/`'s `forget-visit` is the reference design for that.
 
 
-### Shared Vixy configuration (M3)
+### Shared Athena configuration (M3)
 
 The runtime and standalone Dreamer share `MODEL_API_KEY` from the repository-root `.env` of the monorepo. Explicit process values (including an empty string for offline tests) win; `VIXY_ENV_FILE` selects a shared file, then the legacy `DREAMER_ENV_FILE` override and standalone fallback files apply. Model settings reload the same loader, without printing the key or enabling inference automatically. Unified wearable configurations reject contributor models even if the legacy synthetic-only override is set. The default remains non-contributor `muse-spark-1.3`; generation is opt-in.
 

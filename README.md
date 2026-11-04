@@ -1,8 +1,14 @@
-# Vixy
+# Athena
 
-Vixy is a wearable AI assistant that observes, remembers and helps. This repository is the **whole
+Athena is a wearable AI assistant that observes, remembers and helps. This repository is the **whole
 backend** in one place: perception, Context Engine, Episode Writer, Active Agent, unified FalkorDB
 memory, Dreamer, retrieval, the Ask API and the MP4 simulator. A fresh clone is all you need.
+
+> **Naming.** Athena is the product formerly called Vixy. Only the product name changed: the Python
+> packages (`vixy`, `agent`, `memory`, `context_engine`, `prod_dreamer_model`), the CLI
+> (`python -m vixy`), `VIXY_*` environment variables, the `vixy_<user>` graph names, the
+> `vixy.*` schema ids and the agent's "Vixy" wake word are unchanged, so existing data and
+> integrations keep working. Historical milestone reports in `docs/reports/` keep their original wording.
 
 ```text
 MP4 / camera observations
@@ -22,7 +28,7 @@ This repository was created on 2026-11-04 from three original repositories at ve
 ## Layout
 
 ```text
-vixy/
+athena/                       (repository root; local checkouts may still be named vixy/)
 ├── vixy/                     integrated runtime, CLI (python -m vixy), /v1 API, ask, M3 perception + replay
 ├── agent/                    Active Agent
 ├── memory/                   operational + episodic graph memory, schema.cypher
@@ -50,8 +56,8 @@ Prerequisites:
 - for MP4 perception only: `ffmpeg`/`ffprobe` (`brew install ffmpeg`)
 
 ```bash
-git clone https://github.com/meta-hackathon-athena/vixy.git
-cd vixy
+git clone https://github.com/meta-hackathon-athena/athena.git
+cd athena
 make install              # uv sync --frozen, .env from .env.example, FalkorDB, smoke test
 make install-perception   # same + YOLO/Whisper extra and an MP4 replay smoke test
 ```

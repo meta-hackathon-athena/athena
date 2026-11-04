@@ -1,11 +1,11 @@
 # context-engine
 
 > **Monorepo:** this package lives at `components/context-engine/` in
-> [meta-hackathon-athena/vixy](../../README.md). From the repository root, `uv sync` installs it with
+> [meta-hackathon-athena/athena](../../README.md). From the repository root, `uv sync` installs it with
 > the rest of the backend, and `uv run pytest -q components/context-engine` runs its tests. It stays
 > independently installable (Python >= 3.10): the commands below work from this directory.
 
-The ingestion and short-term context layer for **Vixy**. It sits between perception, the active agent, and the dreamer.
+The ingestion and short-term context layer for **Athena**. It sits between perception, the active agent, and the dreamer.
 
 ```
  perception (already processed)                    context-engine                                consumers
@@ -333,7 +333,7 @@ JSONL, one record per line, keys sorted:
   record that cites an `event_id` can be checked against the original observation and its
   `payload_sha256`.
 - `records_after(session_id, after_seq=0, limit=None)` returns events in **ingestion order**
-  with `ingest_seq > after_seq`. A consumer that produces side effects (the Vixy runtime's
+  with `ingest_seq > after_seq`. A consumer that produces side effects (the Athena runtime's
   Episode Writer and Active Agent) uses it to resume or recover after a restart.
 
 ## Integration guide
