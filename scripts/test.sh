@@ -23,7 +23,7 @@ exec > >(tee "$LOG") 2>&1
 
 export MODEL_API_KEY="" BASETEN_API_KEY="" VIXY_LLM_MODEL=""
 SERVER=${VIXY_TEST_FALKORDB_URL:-redis://localhost:6390}
-RAND=$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 8 || true)
+RAND=$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom 2>/dev/null | head -c 8 || true)
 TMP=$(mktemp -d "${TMPDIR:-/tmp}/vixy-test.XXXXXX")
 USERS=()
 FAILED=()

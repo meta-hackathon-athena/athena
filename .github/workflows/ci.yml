@@ -35,6 +35,8 @@ jobs:
       VIXY_TEST_FALKORDB_URL: redis://localhost:6379
     steps:
       - uses: actions/checkout@v4
+      # ffprobe: tests/test_m3.py checks the corrupt-media error path (no models are installed here)
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.12"
