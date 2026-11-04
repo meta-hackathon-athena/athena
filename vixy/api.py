@@ -22,8 +22,8 @@
 Every response is JSON with a ``schema`` key; errors are ``vixy.error.v1``. Reads use the
 read-only memory interfaces; the only writes are event ingestion (through the normal
 runtime path), answers to the agent's own questions (through ActiveAgent.answer, which
-applies only its allow-listed operations) and the Dreamer job. No authentication: local development only (Milestone 4
-adds the app; binding is 127.0.0.1 by default).
+applies only its allow-listed operations) and the Dreamer job. No authentication: local development only
+(binding is 127.0.0.1 by default).
 """
 
 from __future__ import annotations

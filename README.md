@@ -1,218 +1,101 @@
-# Vixy
+# Athena
 
-Vixy is a wearable AI assistant that observes, remembers and helps. This repository is the **whole
-backend** in one place: perception, Context Engine, Episode Writer, Active Agent, unified FalkorDB
-memory, Dreamer, retrieval, the Ask API and the MP4 simulator. A fresh clone is all you need.
+**A wearable that sees what you see, remembers what matters, and only speaks up when it should.**
 
-```text
-MP4 / camera observations
-  -> YOLO11n + Whisper (local)          vixy/perception.py
-  -> Context Engine + SQLite            components/context-engine        (Aryan)
-  -> Episode Writer                     vixy/episode_writer.py
-  -> Active Agent                       agent/                           (Samu)
-  -> FalkorDB, one graph per user       memory/, docker-compose.yml      graph vixy_<user>, schema vixy.graph.v2
-  <-> Dreamer                           components/dreamer-model         (Ara)
-  -> retrieval / /v1/ask / notifications  vixy/retrieval.py, vixy/ask.py, vixy/api.py
-```
+A small camera clips onto you. Athena turns what it sees and hears into a memory graph of your days,
+checks that graph in real time to decide whether to say anything, and every night "dreams": it
+replays the day against everything before it and turns repeated evidence into beliefs. It runs on
+small local models, and most decisions need no language model at all.
 
-This repository was created on 2026-11-04 from three original repositories at verified commits; see
-[docs/MONOREPO_MIGRATION.md](docs/MONOREPO_MIGRATION.md). Validation results are in
-[docs/reports/VIXY_MONOREPO_VALIDATION.md](docs/reports/VIXY_MONOREPO_VALIDATION.md).
+![The supermarket moment: what Athena sees, what it decides, and the one notification it sends](docs/assets/athena-moment.jpg)
 
-## Athena app: Clarify and Memories
+## What it does
 
-Athena (the product name; the code and CLI are still called `vixy`) frees up mental space by helping
-you clarify what it heard and remember what matters. The web app in [`frontend/web/`](frontend/web/README.md)
-has the two screens used in the demo video:
+- **Sees and hears.** YOLO11n (1 frame/s) and Whisper run locally, not in the cloud.
+- **Remembers with evidence.** Every utterance, visit and object lands in a FalkorDB graph, one per
+  user. Every belief links back to the original recording it came from.
+- **Knows who said it.** If someone else says "I have class at 6", it is *their* plan, not yours.
+  Things you only heard about are kept as **not verified**.
+- **Speaks up rarely.** The Active Agent is rules first: in a simulated 9-hour day, 30,420 frames
+  led to 7 notifications and 2 language-model calls.
+- **Dreams at night.** The Dreamer consolidates days into patterns and long-term memories. A
+  routine needs several separate days, a one-off stays an anomaly, and a stated change supersedes
+  the old fact while keeping its history.
+- **Asks before it changes things.** If you correct a plan, Athena asks "did this change?" and only
+  writes to memory after you answer.
 
-- **Clarify** (`http://127.0.0.1:5173/#/clarify`): Athena's open yes/no question, the words that
-  raised it, what is saved right now, and what "Yes" will change. Yes and No are sent to the backend.
-- **Memories** (`http://127.0.0.1:5173/#/memories`): memory cards summarizing what the knowledge
-  graph holds: plans, things heard about people (marked "Not verified" when someone else said them),
-  things you said about yourself, and reminders. A card changed by your last answer is highlighted.
-
-Run it (needs Docker for FalkorDB, Node 18 or newer, and `make install` once):
-
-```bash
-make falkordb                         # FalkorDB server on localhost:6390
-make ui-demo VIXY_USER=app_demo       # two synthetic days + one spoken plan change
-make serve VIXY_USER=app_demo         # terminal 1: API on http://127.0.0.1:8765/v1
-make web                              # terminal 2: app on http://127.0.0.1:5173
-```
-
-**Working integrations.** Both screens read live data from the `/v1` API through a same-origin proxy
-(`frontend/web/server.mjs`, Node built-ins only). Answering calls `POST /v1/questions/{id}/answer`,
-which runs the Active Agent's existing `ActiveAgent.answer`: "Yes" applies the question's allow-listed
-graph write (move and confirm a plan, or complete a reminder) and logs it as an AgentLog decision. "No"
-changes nothing. `make ui-demo` creates the demo question by sending one utterance ("Actually I will
-meet Marta on Thursday at 11am.") through the normal ingestion path, see
-[demo/ui/clarification.jsonl](demo/ui/clarification.jsonl).
-
-**Demo fixtures.** `?fixtures=1` (for example `http://127.0.0.1:5173/?fixtures=1#/clarify`) runs the
-app offline from `frontend/web/public/fixtures.js`, a captured snapshot of real responses. An amber
-banner marks it, and answers there are not saved. Regenerate it with
-`node frontend/web/capture-fixtures.mjs`.
-
-**Limitations.**
-
-- Answers change plans and reminders only. No backend operation verifies or rejects a Dreamer
-  memory (for example "Alex is allergic to peanuts"), so those cards stay "Not verified".
-- Questions come from the agent's rules: plan corrections, plan confirmations, clarifying a time,
-  and completing a reminder. The synthetic demo produces two of them.
-- Answers persist. To record again, stop `make serve`, rerun `make ui-demo VIXY_USER=app_demo`, and
-  start it again.
-- Times are simulated event times (Mon 2 to Tue 3 Nov 2026), shown in Asia/Singapore.
-- The embedded graph (`FALKORDB_URL` empty) did not start on macOS arm64 in testing, because the
-  locked `falkordblite` wheel ships a non-macOS `falkordb.so`. Use the Docker server.
-- The API still has no authentication or CORS (see Security below). Keep both servers on `127.0.0.1`.
-
-## Layout
+![From a glance to a decision and a belief](docs/assets/athena-architecture.jpg)
 
 ```text
-vixy/
-├── vixy/                     integrated runtime, CLI (python -m vixy), /v1 API, ask, M3 perception + replay
-├── agent/                    Active Agent
-├── memory/                   operational + episodic graph memory, schema.cypher
-├── components/
-│   ├── context-engine/       Context Engine (package vixy-context-engine, import context_engine)
-│   └── dreamer-model/        Dreamer (package prod-dreamer-model, import prod_dreamer_model)
-├── frontend/                 web/: the Athena web app (Clarify + Memories); the mobile app (Ara) is planned
-├── tests/                    runtime, agent, memory, integration and M3 tests
-├── demo/                     MP4 simulator workflow; demo/inputs and demo/outputs are local-only
-├── scripts/                  bootstrap.sh, test.sh, smoke_test.py, diagnose.sh
-├── docs/                     architecture, API, contracts, schema, frontend handoff, reports
-├── docker-compose.yml        FalkorDB server (localhost:6390)
-├── Makefile                  the entry points below
-├── pyproject.toml, uv.lock   one uv workspace: the root + components/*
-└── .env.example              configuration template (no secrets)
+camera + mic ─► perception ─► Context Engine ─► memory graph (FalkorDB)
+ (wearable)     YOLO11n         validate,            │        ▲
+                Whisper         dedupe, align         ▼        │
+                                              Active Agent   Dreamer
+                                              (day: speak?)  (night: believe?)
+                                                     │        │
+                                                     └─► /v1 API ─► Athena app
 ```
 
-## Install
+## The app
 
-Prerequisites:
+Two screens, both reading the live backend: **Clarify** (Athena's yes/no question, the words that
+raised it, and what "Yes" will change) and **Memories** (what Athena believes, and how much it
+trusts it).
 
-- [`uv`](https://docs.astral.sh/uv/getting-started/installation/), which installs Python 3.12 itself
-- Docker, for the FalkorDB server
-- `make`
-- for MP4 perception only: `ffmpeg`/`ffprobe` (`brew install ffmpeg`)
+![Clarify, the answer, and Memories](docs/assets/athena-app.jpg)
+
+## Run it (about 5 minutes)
+
+You need [`uv`](https://docs.astral.sh/uv/getting-started/installation/) (it installs Python 3.12
+for you), Node 18+ and `make`. Docker is optional.
 
 ```bash
-git clone https://github.com/meta-hackathon-athena/vixy.git
-cd vixy
-make install              # uv sync --frozen, .env from .env.example, FalkorDB, smoke test
-make install-perception   # same + YOLO/Whisper extra and an MP4 replay smoke test
+git clone https://github.com/meta-hackathon-athena/athena.git && cd athena
+./scripts/bootstrap.sh --no-docker              # or `make install` if you have Docker
+
+make ui-demo VIXY_USER=app_demo FALKORDB_URL=   # two synthetic days, the Dreamer, one plan change
+make serve   VIXY_USER=app_demo FALKORDB_URL=   # API on http://127.0.0.1:8765/v1   (terminal 1)
+make web                                        # app on http://127.0.0.1:5173      (terminal 2)
 ```
 
-`make install` runs [scripts/bootstrap.sh](scripts/bootstrap.sh); `--no-docker` there uses the
-embedded single-process graph instead. All components resolve from `components/` through the uv
-workspace, and nothing outside the repository is cloned or referenced.
+Open <http://127.0.0.1:5173> in a phone-sized window, answer the question, then open Memories.
+With Docker, run `make falkordb` first and drop `FALKORDB_URL=`. The code and CLI still use the
+working name `vixy`.
 
-No paid model is called by default, and no key is needed. Real keys go only into your local `.env`,
-which is gitignored. See the "Meta Muse" notes below.
-
-## Run the backend
+Ask it things from the terminal:
 
 ```bash
-make demo-data VIXY_USER=app_demo    # two synthetic days -> Dreamer -> decisions (M2 demo, 18 checks)
-make serve VIXY_USER=app_demo        # http://127.0.0.1:8765/v1  (HOST=, PORT= to change)
-curl -s localhost:8765/v1/health
-```
-
-The app contract (endpoints, ids, polling notifications, simulator, CORS/auth) is in
-[docs/FRONTEND_INTEGRATION.md](docs/FRONTEND_INTEGRATION.md). Field reference:
-[docs/API.md](docs/API.md).
-
-**Always pass a user id.** The default user is `demo`, whose graph `vixy_demo` is the team's
-preserved M1 graph. `vixy demo --fresh` and `demo-m2 --fresh` delete that user's graph, and
-`.env.example` points at the shared server, so use your own ids (`app_demo`, `m1_try`, …). The
-`make` targets refuse `VIXY_USER=demo`.
-
-Other commands (run from the repository root; `FALKORDB_URL` comes from `.env`):
-
-```bash
-uv run python -m vixy --user m1_try --state-dir data/m1_try demo --fresh    # M1 pipeline + self-checks
 uv run python -m vixy --user app_demo --state-dir data/app_demo ask "What do you remember about Alex?"
-uv run python -m vixy --user app_demo --state-dir data/app_demo decisions --limit 10
-uv run python -m vixy --user app_demo --state-dir data/app_demo timeline 2026-11-02
-uv run python -m vixy --user app_demo --state-dir data/app_demo dream        # offline consolidation
-uv run python -m vixy --user app_demo --state-dir data/app_demo memories --about Alex
-uv run python -m vixy --user u --state-dir data/u ingest events.jsonl | flush | recover | status | migrate
-# the Dreamer as its own process on the same graph (Ara's CLI). Needs the shared server, i.e.
-# FALKORDB_URL from .env or exported; without it, the Dreamer opens its own empty embedded file:
-uv run python -m prod_dreamer_model.cli --layout unified --user app_demo dream --offline \
-    --history-db data/app_demo/vixy_events.sqlite3
+uv run python -m vixy --user app_demo --state-dir data/app_demo decisions --limit 5
 ```
 
-## MP4 simulator (Milestone 3)
+`make ui-demo` also prints 18 end-to-end checks. Two of them: on Tuesday the agent recalls that
+"someone mentioned Alex is allergic to peanuts" when you plan to buy peanuts for Alex (attributed,
+not certain), and it refuses to invent a memory it doesn't have.
 
-```bash
-make replay SCENARIO=demo/inputs/scenario_01/scenario.json SPEED=4    # process (YOLO+Whisper) then replay
-make replay SCENARIO=demo/inputs/scenario_01/scenario.json REPLAY_ARGS=--fresh
-```
+## What is real today
 
-The manifest format, your own recordings, pause/resume, reset rules and inspection commands are in
-[demo/README.md](demo/README.md). `demo/inputs/**` and `demo/outputs/**` are never committed.
-
-## Tests
-
-| Command | What runs |
+| | |
 |---|---|
-| `make test` | **unit**: Context Engine, Dreamer and runtime/agent/memory suites, offline, embedded graph |
-| `make test-integration` | **integration** (FalkorDB server): runtime shared-server variants, 14 Active Agent scenarios, M1 + M2 demos, `/v1` HTTP smoke test |
-| `make smoke-av` | **M3 audiovisual**: generated MP4 → local YOLO11n + Whisper → cache → replay acceptance (embedded + server), real-model media edge cases, MP4 replay smoke test |
-| `make test-all` | all three |
+| Built and tested | perception (YOLO11n + Whisper, local), Context Engine, Episode Writer, Active Agent, FalkorDB memory, Dreamer, `/v1` API, web app |
+| Tests | `make test` (unit, offline) · `make test-integration` (FalkorDB server, 14 agent scenarios, demos, HTTP) · `make smoke-av` (MP4 → YOLO + Whisper → replay) |
+| Hardware | an RGB-D camera and a RUBIK Pi 3 (Qualcomm QCS6490) are the target; perception runs on a laptop CPU today, and an MP4 simulator replays recordings |
+| Models | no paid model by default; Meta Muse is an opt-in for the Dreamer and `/ask` |
+| Data | memory-aware behaviour is shown on synthetic days; our own short recordings process end to end but don't produce long-term memories yet |
 
-All levels blank the model keys and use new disposable users (`it_*`, `smoke_*`, `m3_av_*`) whose
-graphs are deleted afterwards. A single suite runs directly:
-`uv run pytest -q components/context-engine`, `uv run pytest -q components/dreamer-model`, or
-`uv run pytest -q`. The opt-in test for private real recordings is described in
-[demo/README.md](demo/README.md#timestamp-boundary-diagnostics-and-real-recording-verification).
+## Repository
 
-CI ([.github/workflows/ci.yml](.github/workflows/ci.yml)) runs `scripts/test.sh unit` and
-`integration` on every push to `main` and every PR, against a FalkorDB service container. It also
-runs Context Engine standalone on Python 3.10. The audiovisual level is an optional manual job
-(`workflow_dispatch`, input `audiovisual`), because it installs torch and downloads model weights.
-It has been validated **locally** (`make smoke-av`) but has not yet run on GitHub Actions; see
-[the validation report](docs/reports/VIXY_MONOREPO_VALIDATION.md#8-github-actions).
+```text
+vixy/          runtime, CLI, /v1 API, perception and replay
+agent/         Active Agent (rules, recall, questions)
+memory/        graph memory and schema
+components/    context-engine/, dreamer-model/
+frontend/web/  the Athena app (no build step, Node built-ins only)
+demo/          MP4 simulator
+docs/          architecture, API, graph schema, reports
+```
 
-## Logs and diagnostics
+More detail: [architecture](docs/ARCHITECTURE.md) · [graph schema](docs/GRAPH_SCHEMA.md) ·
+[API](docs/API.md) · [app integration](docs/FRONTEND_INTEGRATION.md) · [simulator](demo/README.md).
 
-- `logs/`: every `scripts/test.sh` and `make replay` run writes a timestamped log here; CI uploads it.
-- `make diagnose`: versions, FalkorDB status and graph names, and which `.env` keys are set (names only) → `logs/diagnose-*.txt`.
-- `demo/outputs/<user>/`: per-replay monitor `replay.jsonl` (contains transcripts: private), `summary.json`, caches and `state/`.
-- `data/<user>/`: Context Engine and runtime SQLite for CLI/serve users.
-
-## Meta Muse and what is verified
-
-- **Runs locally:** everything in the default configuration: YOLO11n, Whisper, Context Engine,
-  Episode Writer, the Active Agent rules and recall, FalkorDB, the Dreamer's offline rules, and `/v1/ask` rules.
-- **Can use Meta Muse** (opt-in, needs `MODEL_API_KEY` and separate billing authorization):
-  - Dreamer `dream --online` and `--model-extraction`
-  - the agent recall reasoner and `/ask` rephrasing, when a model is passed to `VixyRuntime`
-  - contributor models are refused in wearable paths
-- **Not verified live:** no Muse inference call has been made. Only a metadata `GET /v1/models` was made in M3.
-- **Real recordings:** the team's two real recordings process end to end (158 events → 47 Notes), but
-  produce **no long-term memories and no proactive notifications**. Memory-aware behaviour is shown with
-  synthetic data only (the M2 demo and the generated MP4 fixture).
-
-## Documentation
-
-[docs/README.md](docs/README.md) is the index:
-
-- [ARCHITECTURE](docs/ARCHITECTURE.md)
-- [GRAPH_SCHEMA](docs/GRAPH_SCHEMA.md)
-- [CONTRACTS](docs/CONTRACTS.md)
-- [API](docs/API.md)
-- [FRONTEND_INTEGRATION](docs/FRONTEND_INTEGRATION.md)
-- [MONOREPO_MIGRATION](docs/MONOREPO_MIGRATION.md)
-- the M1–M3 and monorepo reports in [docs/reports/](docs/reports/)
-
-Component docs: [agent/README.md](agent/README.md), [memory/README.md](memory/README.md),
-[components/context-engine/README.md](components/context-engine/README.md),
-[components/dreamer-model/README.md](components/dreamer-model/README.md).
-
-## Security
-
-- Never commit `.env`, keys, recordings, transcripts, SQLite files, graph data, model weights or caches. `.gitignore` covers all of them.
-- This repository was built from clean source snapshots and contains no history from the original repositories. A Baseten key committed in the original master-repo history (commit `aa020ad`) is therefore **not** in this repository; the account owner confirmed its revocation on 2026-11-04.
-- The `/v1` API has no authentication and binds to `127.0.0.1` by default. It doesn't check `Content-Type`, `Origin` or `Host` either, so a malicious web page could send it cross-site POSTs (CSRF) or reach it through DNS rebinding. This is an open issue; see [FRONTEND_INTEGRATION §10](docs/FRONTEND_INTEGRATION.md#10-cors-and-authentication) for the planned fix. Don't leave `serve` running while browsing untrusted sites.
+The API has no authentication and binds to `127.0.0.1`, so keep it local.

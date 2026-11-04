@@ -3,7 +3,6 @@
 - [`web/`](web/README.md): the Athena web app used for the demo video. It has two screens,
   **Clarify** (answer Athena's yes/no question) and **Memories** (memory cards from the knowledge
   graph), and no dependencies beyond Node.
-- The mobile application (owner: Ara, Milestone 4) is still planned and would live next to it.
 
 Contract with the backend, for every app in this directory:
 

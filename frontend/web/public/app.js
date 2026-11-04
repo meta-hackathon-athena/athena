@@ -22,7 +22,7 @@ const icon = {
   ear: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 9a4.5 4.5 0 1 1 9 0c0 3-3 3.6-3 6.5a2.5 2.5 0 0 1-4.6 1.3M10.5 9.5a2 2 0 1 1 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
   bookmark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h10v17l-5-3.6-5 3.6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
 };
-const chip = (s) => s ? `<span class="chip ${s.tone}">${f.esc(s.label)}${s.note ? ` <span class="chip-note">${f.esc(s.note)}</span>` : ""}</span>` : "";
+const chip = (s) => s ? `<span class="chip ${s.tone}"><i aria-hidden="true"></i>${f.esc(s.label)}${s.note ? ` <span class="chip-note">${f.esc(s.note)}</span>` : ""}</span>` : "";
 
 function setCount(n) {
   askCount.hidden = !n;
@@ -86,17 +86,15 @@ function renderClarify() {
   const total = c.questions.length;
   app.innerHTML = `
     <section class="clarify" aria-busy="${busy}">
-      <p class="eyebrow"><span class="pulse" aria-hidden="true"></span>Athena wants to check something
+      <p class="eyebrow">Needs your answer
         ${total > 1 ? `<span class="step">1 of ${total}</span>` : ""}</p>
       <h1 class="question" id="q-text">${f.esc(q.text).replace(/(\d) (AM|PM)\b/g, "$1&nbsp;$2")}</h1>
       <div class="context">
         ${heard ? `<div class="ctx">
-          <div class="ctx-icon">${icon.ear}</div>
           <div><div class="ctx-label">${f.esc(heard.who)}</div>
-            <blockquote>"${f.esc(heard.text)}"</blockquote>
+            <blockquote>“${f.esc(heard.text)}”</blockquote>
             ${heard.at ? `<div class="ctx-meta">${f.esc(heard.at)}</div>` : ""}</div></div>` : ""}
         ${saved ? `<div class="ctx">
-          <div class="ctx-icon">${icon.bookmark}</div>
           <div><div class="ctx-label">Saved right now</div>
             <div class="ctx-value">${f.esc(saved.title)} <span class="dot">·</span> ${f.esc(saved.detail)}</div>
             <div class="ctx-chips">${chip(saved.status)}</div></div></div>` : ""}
@@ -110,7 +108,6 @@ function renderClarify() {
           ${busy && c.choice === "yes" ? '<span class="spinner"></span>Saving' : "Yes"}</button>
       </div>
       ${c.error ? `<p class="inline-error" role="alert">${f.esc(c.error)}</p>` : ""}
-      <p class="hint">Press <kbd>Y</kbd> or <kbd>N</kbd></p>
     </section>`;
   app.querySelectorAll("[data-answer]").forEach((b) => (b.onclick = () => submit(q, b.dataset.answer)));
 }
@@ -196,10 +193,10 @@ async function loadMemories() {
 function card({ id, cls = "", kicker, avatar, iconSvg, status, text, sub, history, meta }) {
   const hot = state.justUpdated?.aboutId === id;
   return `<article class="card ${cls} ${hot ? "just-updated" : ""}" id="card-${f.esc(id)}">
-    ${hot ? '<div class="updated-badge">Just updated from your answer</div>' : ""}
     <div class="card-top">
       ${avatar ? `<span class="avatar">${f.esc(avatar)}</span>` : `<span class="avatar icon">${iconSvg}</span>`}
       <div class="kicker">${kicker}</div>
+      ${hot ? '<span class="updated-badge">Updated just now</span>' : ""}
     </div>
     <p class="card-text">${f.esc(text)}</p>
     ${sub ? `<p class="card-sub">${f.esc(sub)}</p>` : ""}
@@ -242,8 +239,8 @@ function renderMemories({ memories, commitments, reminders, details }) {
   app.innerHTML = `
     <section class="memories">
       <header class="page-head">
-        <h1>What Athena remembers</h1>
-        <p>Short summaries of what Athena has learned, built from its knowledge graph. Anything it hasn't verified is marked.</p>
+        <h1>Memories</h1>
+        <p>What Athena has learned from your days. Anything it hasn't verified is marked.</p>
       </header>
       ${total ? "" : '<div class="panel state-panel"><h1>No memories yet</h1><p>Athena forms memories after it has heard and seen your day and consolidated it overnight.</p></div>'}
       ${section("Plans", "From what you said", commitments, planCard)}

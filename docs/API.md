@@ -1,6 +1,6 @@
-# Vixy backend API: `/v1` (Milestone 2)
+# Athena backend API: `/v1`
 
-The JSON interface for the future Vixy app (Milestone 4) and the simulator (Milestone 3).
+The JSON interface used by the Athena app and the simulator.
 Code: `vixy/api.py` (routes) and `vixy/ask.py` (questions). Start it with:
 
 ```bash
