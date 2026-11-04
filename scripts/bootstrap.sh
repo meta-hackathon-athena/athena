@@ -45,6 +45,11 @@ if [ $DOCKER = 1 ]; then
   export FALKORDB_URL="redis://localhost:${VIXY_FALKORDB_PORT:-6390}"
 else
   export FALKORDB_URL=""            # an explicit empty value wins over .env: embedded graph
+  # later `uv run python -m vixy ...` commands read .env, so point it at the embedded graph too
+  if grep -q '^FALKORDB_URL=redis://localhost:6390$' .env; then
+    sed -i.bak 's|^FALKORDB_URL=redis://localhost:6390$|FALKORDB_URL=|' .env && rm -f .env.bak
+    echo "  .env: FALKORDB_URL emptied (embedded graph, no Docker)"
+  fi
 fi
 
 if [ $SMOKE = 1 ]; then
