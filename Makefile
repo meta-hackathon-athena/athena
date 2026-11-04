@@ -18,13 +18,13 @@ help:
 	@echo "make install                 uv env + .env + FalkorDB + smoke test (scripts/bootstrap.sh)"
 	@echo "make install-perception      same, plus the MP4 extra (YOLO/Whisper; needs ffmpeg)"
 	@echo "make falkordb                start the shared FalkorDB server on localhost:6390"
-	@echo "make demo-data VIXY_USER=u   load the two-day M2 demo into a new user (never 'demo')"
+	@echo "make demo-data VIXY_USER=u   load two synthetic days into a new user (never 'demo')"
 	@echo "make serve VIXY_USER=u       backend API on http://$(HOST):$(PORT)/v1"
-	@echo "make ui-demo VIXY_USER=u     demo-data + one spoken plan change, so the app has a question to clarify"
+	@echo "make ui-demo VIXY_USER=u     demo-data + Dreamer on Muse (if MODEL_API_KEY) + one spoken plan change"
 	@echo "make web                     Athena web app (Clarify + Memories) on http://127.0.0.1:5173"
 	@echo "make test                    unit suites: context-engine, dreamer-model, runtime (offline)"
-	@echo "make test-integration        FalkorDB server variants, agent scenarios, M1/M2 demos, HTTP smoke"
-	@echo "make smoke-av                M3 audiovisual: MP4 -> YOLO + Whisper -> replay acceptance"
+	@echo "make test-integration        FalkorDB server variants, agent scenarios, demos, HTTP smoke"
+	@echo "make smoke-av                audiovisual: MP4 -> YOLO + Whisper -> replay acceptance"
 	@echo "make test-all                all of the above"
 	@echo "make replay SCENARIO=path/scenario.json [SPEED=4] [REPLAY_ARGS=--fresh]   process + replay a local MP4"
 	@echo "make diagnose                versions, FalkorDB, graphs and env (no secret values) -> logs/"
@@ -48,6 +48,10 @@ demo-data:
 	uv run --frozen python -m vixy --user $(VIXY_USER) --state-dir data/$(VIXY_USER) demo-m2 --fresh
 
 ui-demo: demo-data
+	@if [ -n "$$MODEL_API_KEY" ] || grep -qs '^MODEL_API_KEY=.' .env; then \
+	  echo "Dreamer on Meta Muse (MODEL_API_KEY found)"; \
+	  uv run --frozen python -m vixy --user $(VIXY_USER) --state-dir data/$(VIXY_USER) dream --online | tail -n 12; \
+	else echo "No MODEL_API_KEY: the Dreamer stays offline"; fi
 	uv run --frozen python -m vixy --user $(VIXY_USER) --state-dir data/$(VIXY_USER) ingest demo/ui/clarification.jsonl
 
 web:

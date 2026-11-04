@@ -2,39 +2,33 @@
 
 **A wearable that sees what you see, remembers what matters, and only speaks up when it should.**
 
-A small camera clips onto you. Athena turns what it sees and hears into a memory graph of your days,
-checks that graph in real time to decide whether to say anything, and every night "dreams": it
-replays the day against everything before it and turns repeated evidence into beliefs. It runs on
-small local models, and most decisions need no language model at all.
+We wanted a memory aid that behaves like a thoughtful friend, not a recorder. Athena is a small
+camera you clip on. It builds a graph of your days from what it sees and hears, decides in real
+time whether anything is worth telling you (usually it isn't), and every night it "dreams":
+it replays the day against everything before it and only then decides what to believe.
 
-![The supermarket moment: what Athena sees, what it decides, and the one notification it sends](docs/assets/athena-moment.jpg)
+**▶ [Watch the 3-minute demo](https://youtu.be/ZgWDbSlrJaE)**
 
-## What it does
+[![The supermarket moment: what Athena sees, what it decides, and the one notification it sends](docs/assets/athena-moment.jpg)](https://youtu.be/ZgWDbSlrJaE)
 
-- **Sees and hears.** YOLO11n (1 frame/s) and Whisper run locally, not in the cloud.
-- **Remembers with evidence.** Every utterance, visit and object lands in a FalkorDB graph, one per
-  user. Every belief links back to the original recording it came from.
-- **Knows who said it.** If someone else says "I have class at 6", it is *their* plan, not yours.
-  Things you only heard about are kept as **not verified**.
-- **Speaks up rarely.** The Active Agent is rules first: in a simulated 9-hour day, 30,420 frames
-  led to 7 notifications and 2 language-model calls.
-- **Dreams at night.** The Dreamer consolidates days into patterns and long-term memories. A
-  routine needs several separate days, a one-off stays an anomaly, and a stated change supersedes
-  the old fact while keeping its history.
-- **Asks before it changes things.** If you correct a plan, Athena asks "did this change?" and only
-  writes to memory after you answer.
+## How it works
+
+A camera and mic feed two small local models: YOLO11n looks at one frame per second and Whisper
+transcribes speech. The Context Engine validates and aligns those events, and everything lands in a
+FalkorDB graph, one per user. Every note, visit and belief keeps a link to the recording it came
+from, so Athena can always tell you *why* it thinks something.
+
+During the day the **Active Agent** reads that graph and decides whether to speak. It is rules
+first and mostly quiet: in a simulated 9-hour day, 30,420 frames turned into 7 notifications. It
+also cares about who said what. If a friend says "I have class at 6", that's their plan, not
+yours, and things you only heard about stay marked as not verified.
+
+At night the **Dreamer** goes through the day in four rounds (routines, places, people, then
+consolidation) and writes patterns and long-term memories. One visit to a clinic stays an anomaly;
+a routine needs several separate days. When you correct something, the old fact is superseded,
+not deleted, and when Athena isn't sure, it asks you before changing anything.
 
 ![From a glance to a decision and a belief](docs/assets/athena-architecture.jpg)
-
-```text
-camera + mic ─► perception ─► Context Engine ─► memory graph (FalkorDB)
- (wearable)     YOLO11n         validate,            │        ▲
-                Whisper         dedupe, align         ▼        │
-                                              Active Agent   Dreamer
-                                              (day: speak?)  (night: believe?)
-                                                     │        │
-                                                     └─► /v1 API ─► Athena app
-```
 
 ## The app
 
@@ -47,31 +41,56 @@ trusts it).
 ## Run it (about 5 minutes)
 
 You need [`uv`](https://docs.astral.sh/uv/getting-started/installation/) (it installs Python 3.12
-for you), Node 18+ and `make`. Docker is optional.
+for you), Node 18+ and `make`. Docker is optional. The code and CLI still use the working name
+`vixy`.
 
 ```bash
 git clone https://github.com/meta-hackathon-athena/athena.git && cd athena
-./scripts/bootstrap.sh --no-docker              # or `make install` if you have Docker
+./scripts/bootstrap.sh --no-docker      # or `make install` if you have Docker (then drop FALKORDB_URL= below)
+```
 
-make ui-demo VIXY_USER=app_demo FALKORDB_URL=   # two synthetic days, the Dreamer, one plan change
-make serve   VIXY_USER=app_demo FALKORDB_URL=   # API on http://127.0.0.1:8765/v1   (terminal 1)
+### 1. Watch a simulated run in the terminal
+
+Two synthetic days go through the whole pipeline: events, the Active Agent's live decisions, the
+Dreamer overnight, then questions to `/ask`, each answer traced back to the original event. With a
+Muse key in `.env` the Dreamer also does a Muse pass, which takes about three minutes.
+
+```bash
+make ui-demo VIXY_USER=app_demo FALKORDB_URL=
+```
+
+```text
+3. restart (new runtime process state); the simulated clock moves to Day 2 (Tue 3 Nov)
+   Tue 17:17:20  NOTIFY  done        You're at the supermarket. Reminder: buy milk at the supermarket
+   Tue 17:20:03  NOTIFY  done        Someone mentioned yesterday that Alex is allergic to peanuts. I haven't verified it. …
+   Tue 17:30:03  NOTIFY  suppressed  Someone mentioned yesterday that Alex is allergic to peanuts. …
+   Tue 19:00:03  NOTIFY  done        Someone mentioned yesterday that Marta has a presentation on Thursday 5 Nov at 09:00. …
+…
+   Q: What did Marta tell me about the presentation?
+   A: [answered] I can't identify speakers by name, so I can't confirm it was Marta who said it. …
+    source Note note_7e7ea96f6e51a2b5 … ✓ text + sha256 match the original event
+18/18 checks passed
+```
+
+### 2. Use the app
+
+```bash
+make serve VIXY_USER=app_demo FALKORDB_URL=     # API on http://127.0.0.1:8765/v1   (terminal 1)
 make web                                        # app on http://127.0.0.1:5173      (terminal 2)
 ```
 
 Open <http://127.0.0.1:5173> in a phone-sized window, answer the question, then open Memories.
-With Docker, run `make falkordb` first and drop `FALKORDB_URL=`. The code and CLI still use the
-working name `vixy`.
-
-Ask it things from the terminal:
+Or ask from the terminal:
 
 ```bash
 uv run python -m vixy --user app_demo --state-dir data/app_demo ask "What do you remember about Alex?"
-uv run python -m vixy --user app_demo --state-dir data/app_demo decisions --limit 5
 ```
 
-`make ui-demo` also prints 18 end-to-end checks. Two of them: on Tuesday the agent recalls that
-"someone mentioned Alex is allergic to peanuts" when you plan to buy peanuts for Alex (attributed,
-not certain), and it refuses to invent a memory it doesn't have.
+### 3. Optional: real video through the real models
+
+`make install-perception` adds YOLO11n and Whisper (a few GB, needs `ffmpeg`), and `make smoke-av`
+(needs Docker) generates two short MP4s, runs them through perception and replays them into the backend. To replay
+your own recordings, see [demo/README.md](demo/README.md).
 
 ## Local first, Muse for the hackathon
 
@@ -79,15 +98,17 @@ Athena is meant to run on hardware you own. Your day is the most private data th
 parts that watch and react in real time (perception and the Active Agent) are small, rules-first
 and built to run on a pocket board (target: RUBIK Pi 3, Qualcomm QCS6490) with nothing leaving it.
 
-For this hackathon the reasoning-heavy steps are built on **Meta Muse**: the Dreamer's nightly
-focus rounds (read-only graph queries plus validated write tools) and natural-language recall for
-`/ask`. Put your key in `.env` (`MODEL_API_KEY=...`) and run the Dreamer on Muse:
+The part that needs real reasoning, the Dreamer, runs on **Meta Muse** (`muse-spark-1.3`) for this
+hackathon. Each night it runs four focus rounds over the graph (routines, places, people, then
+consolidation), reading with read-only Cypher and writing only through validated tools, so every
+pattern and memory it stores links back to its evidence. Put your key in `.env` as
+`MODEL_API_KEY=...` and `make ui-demo` dreams on Muse automatically; to run it again:
 
 ```bash
 uv run python -m vixy --user app_demo --state-dir data/app_demo dream --online
 ```
 
-Without a key, everything above still runs offline with rule-based fallbacks.
+Without a key, everything still runs, with the Dreamer's offline rules.
 
 ## Repository
 
