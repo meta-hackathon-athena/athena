@@ -12,11 +12,18 @@
     GET  /v1/decisions/{id}                 one decision with its supporting memories + evidence
     POST /v1/events/audio | /v1/events/video  a CE v1 event, or {"asr": {...}} / {"perception": {...}}
     POST /v1/dream                          run the Dreamer (offline unless the runtime has a model)
+    GET  /v1/questions?status=open|answered|all&limit=   the agent's clarification questions
+    GET  /v1/questions/{id}                 one question: what it is about, what "yes" would change
+    POST /v1/questions/{id}/answer  {answer: "yes"|"no", now?}       answer it in the app
+                                            (ActiveAgent.answer: "yes" applies the allow-listed write)
+    GET  /v1/commitments                    the user's plans (tentative / confirmed, with prior times)
+    GET  /v1/reminders?status=open|done|all  reminders and whether they are done
 
 Every response is JSON with a ``schema`` key; errors are ``vixy.error.v1``. Reads use the
 read-only memory interfaces; the only writes are event ingestion (through the normal
-runtime path) and the Dreamer job. No authentication: local development only (Milestone 4
-adds the app; binding is 127.0.0.1 by default).
+runtime path), answers to the agent's own questions (through ActiveAgent.answer, which
+applies only its allow-listed operations) and the Dreamer job. No authentication: local development only
+(binding is 127.0.0.1 by default).
 """
 
 from __future__ import annotations
@@ -147,7 +154,48 @@ class VixyAPI:
             return {"outcome": out.to_dict()}
         if method == "POST" and head == "dream":
             return {"dream": self.rt.dream()}
+        if head == "questions":
+            return self._questions(method, parts, q, body)
+        if method == "GET" and head == "commitments" and len(parts) == 1:
+            return {"commitments": self.rt.memory.commitments()}
+        if method == "GET" and head == "reminders" and len(parts) == 1:
+            status = {"open": "open", "done": "done", "all": None}.get(q.get("status", "open"), "?")
+            if status == "?":
+                raise ApiError(400, "bad_request", "status must be open, done or all")
+            return {"reminders": self.rt.memory.reminders(status=status)}
         raise ApiError(404, "not_found", f"no route {method} /{API_VERSION}/{'/'.join(parts)}")
+
+    QUESTION_STATUS = {"open": ("pending", "asked"), "answered": ("answered",),
+                       "all": ("pending", "asked", "answered", "expired")}
+
+    def _questions(self, method: str, parts: list[str], q: dict, body: Any) -> dict:
+        if method == "GET" and len(parts) == 1:
+            status = self.QUESTION_STATUS.get(q.get("status", "open"))
+            if status is None:
+                raise ApiError(400, "bad_request", "status must be open, answered or all")
+            return {"questions": self.rt.memory.questions(status=status, limit=_int(q, "limit", 20))}
+        found = self.rt.memory.questions(question_id=parts[1]) if len(parts) >= 2 else []
+        if len(parts) >= 2 and not found:
+            raise ApiError(404, "not_found", f"no question {parts[1]}")
+        if method == "GET" and len(parts) == 2:
+            return {"question": found[0]}
+        if method == "POST" and len(parts) == 3 and parts[2] == "answer":
+            question = found[0]
+            if not isinstance(body, dict) or body.get("answer") not in ("yes", "no"):
+                raise ApiError(400, "bad_request", "body must be {\"answer\": \"yes\" | \"no\"}")
+            if question["status"] not in ("pending", "asked"):
+                raise ApiError(409, "not_open", f"question is {question['status']}")
+            # Simulated data: default to the agent's own latest decision time, never before
+            # the question was asked, so a replayed day is answered in its own time.
+            asked = question.get("asked_ms") or question.get("created_ms") or 0
+            now = _ms(body["now"], "now") if body.get("now") else max(
+                self.rt.agent_memory.latest_log_ms() or 0, asked)
+            if question.get("expires_ms") and question["expires_ms"] <= now:
+                raise ApiError(409, "not_open", "question expired")
+            decisions = self.rt.agent.answer(question["id"], body["answer"], now)
+            return {"decisions": [d.to_dict() for d in decisions],
+                    "question": self.rt.memory.questions(question_id=question["id"])[0]}
+        raise ApiError(404, "not_found", f"no route {method} /{API_VERSION}/{'/'.join(['questions', *parts[1:]])}")
 
     def _memory_detail(self, memory_id: str) -> dict:
         m = self.rt.memory.explain(memory_id)

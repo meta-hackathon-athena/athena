@@ -547,9 +547,11 @@ class ActiveAgent:
             if it.speaker == "other":
                 continue
             fix = {"op": "update_commitment_time", "args": {"cid": e["id"], "start_ms": start, "end_ms": end}}
+            old_day = _local(e["start_ms"]).date()
+            new_t = fmt_min(spec.starts[0]) + (f" (or {fmt_min(spec.starts[1])})" if spec.time_ambiguous else "")
+            old_at = _span(e) if old_day == spec.date else f"{_span(e)} {_day_phrase(old_day, now)}"
             return [self._ask(kind="confirm_correction", key=f"correct:{e['id']}:{start}", ts=ts,
-                              text=f"Did {e['title']} change from {_day_phrase(_local(e['start_ms']).date(), now)} "
-                                   f"{_span(e)} to {when}?",
+                              text=f"Did {e['title']} change from {old_at} to {new_t} {day}{where}?",
                               expires=min(e["start_ms"], start), priority=Priority.NORMAL, on_yes=fix, about=e["id"],
                               reason="new statement contradicts a stored commitment; not changed without confirmation",
                               related=[e["id"]])]

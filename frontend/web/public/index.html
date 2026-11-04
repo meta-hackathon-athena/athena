@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Athena</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="fixture-banner" class="fixture-banner" hidden>
+    Fixture preview: an offline snapshot of real API responses. Answers here are not sent to Athena.
+    <a href="./#/clarify">Use the live backend</a>
+  </div>
+  <header class="topbar">
+    <a class="brand" href="#/clarify" aria-label="Athena home">
+      <img src="logo.svg" alt="" width="26" height="26">
+      <span>Athena</span>
+    </a>
+  </header>
+  <main id="app" tabindex="-1"></main>
+  <nav class="tabs" aria-label="Screens">
+    <a href="#/clarify" data-route="clarify">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H11l-4.5 3.5v-3.5a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      <span>Clarify</span><span class="count" id="ask-count" hidden></span>
+    </a>
+    <a href="#/memories" data-route="memories">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6.5 5h11M9 2.5h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span>Memories</span>
+    </a>
+  </nav>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

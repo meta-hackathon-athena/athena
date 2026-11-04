@@ -215,10 +215,14 @@ class SharedMemory:
     def commitments(self, start_ms: int = 0, end_ms: int = 2**62) -> list[dict]:
         rows = self._ro("""
             MATCH (c:Commitment) WHERE c.start_ms >= $lo AND c.start_ms < $hi
-            OPTIONAL MATCH (c)-[:SUPPORTED_BY]->(n:Note)
+            // pattern comprehension, not OPTIONAL MATCH + collect: that shape with ORDER BY
+            // crashes the FalkorDB server (reply_compact panic)
             RETURN c.id AS id, c.title AS title, c.start_ms AS start_ms, c.end_ms AS end_ms,
                    c.status AS status, c.source AS source, c.people AS people,
-                   collect(n.source_event_id) AS source_event_ids
+                   c.place_text AS place_text, c.time_ambiguous AS time_ambiguous,
+                   c.prev_start_ms AS prev_start_ms, c.prev_end_ms AS prev_end_ms,
+                   c.created_ms AS created_ms, c.updated_ms AS updated_ms,
+                   [(c)-[:SUPPORTED_BY]->(n:Note) | n.source_event_id] AS source_event_ids
             ORDER BY c.start_ms
         """, {"lo": start_ms, "hi": end_ms})
         return [{**r, "label": "Commitment", "layer": "operational"} for r in rows]
@@ -227,7 +231,7 @@ class SharedMemory:
         rows = self._ro("""
             MATCH (n:Note {kind: 'reminder'}) WHERE $s IS NULL OR n.status = $s
             RETURN n.id AS id, n.text AS text, n.status AS status, n.trigger_place_type AS trigger_place_type,
-                   n.ts_ms AS ts_ms, n.source_event_id AS source_event_id
+                   n.ts_ms AS ts_ms, n.done_ms AS done_ms, n.source_event_id AS source_event_id
             ORDER BY n.ts_ms
         """, {"s": status})
         return [{**r, "label": "Note", "layer": "operational"} for r in rows]
@@ -239,6 +243,47 @@ class SharedMemory:
             ORDER BY q.created_ms
         """)
         return [{**r, "label": "Question", "layer": "operational"} for r in rows]
+
+    # The agent's on_yes arguments the app may show (never evidence text or internal keys).
+    _PROPOSAL_ARGS = ("title", "start_ms", "end_ms", "status", "people", "place_text", "cid", "note_id")
+
+    def questions(self, status: tuple[str, ...] = ("pending", "asked"), limit: int = 20,
+                  question_id: str | None = None) -> list[dict]:
+        """Clarification questions with what they are about, the change a "yes" would make,
+        and the utterance that raised them. Newest first."""
+        rows = self._ro("""
+            MATCH (q:Question) WHERE ($id IS NULL AND q.status IN $status) OR q.id = $id
+            RETURN q.id AS id, q.kind AS kind, q.text AS text, q.status AS status, q.source AS source,
+                   q.priority AS priority, q.created_ms AS created_ms, q.not_before_ms AS not_before_ms,
+                   q.asked_ms AS asked_ms, q.expires_ms AS expires_ms, q.answered_ms AS answered_ms,
+                   q.answer AS answer, q.payload AS payload,
+                   [(q)-[:ABOUT]->(x) | {label: labels(x)[0], id: x.id, title: x.title, text: x.text,
+                                         start_ms: x.start_ms, end_ms: x.end_ms, status: x.status,
+                                         prev_start_ms: x.prev_start_ms, people: x.people}] AS about,
+                   [(l:AgentLog)-[:CONCERNS]->(q) WHERE l.action = 'ASK_USER' |
+                       {id: l.id, ts_ms: l.ts_ms, trigger_event_id: l.trigger_event_id}] AS asked_by
+            ORDER BY coalesce(q.asked_ms, q.created_ms) DESC, q.id LIMIT $n
+        """, {"status": list(status), "id": question_id, "n": limit})
+        out = []
+        for r in rows:
+            payload = json.loads(r.pop("payload", None) or "{}")
+            op = payload.get("on_yes") or {}
+            r["proposal"] = ({"op": op.get("op"), **{k: v for k, v in (op.get("args") or {}).items()
+                                                     if k in self._PROPOSAL_ARGS and v is not None}}
+                             if op else None)
+            r["about"] = r.get("about") or []
+            asked = sorted(r.pop("asked_by", None) or [], key=lambda a: a.get("ts_ms", 0))
+            trigger = next((a.get("trigger_event_id") for a in asked if a.get("trigger_event_id")), None)
+            r["heard"] = None
+            if trigger:
+                notes = self._ro("""
+                    MATCH (n:Note {source_event_id: $e})
+                    RETURN n.id AS id, n.text AS text, n.ts_ms AS ts_ms, n.timestamp AS timestamp,
+                           n.speaker_role AS speaker_role, n.source_event_id AS source_event_id LIMIT 1
+                """, {"e": trigger})
+                r["heard"] = {**notes[0], "label": "Note", "layer": "observed"} if notes else None
+            out.append({**r, "label": "Question", "layer": "operational"})
+        return out
 
     def stats(self) -> dict[str, Any]:
         return {r["label"]: r["n"] for r in self._ro("MATCH (n) RETURN labels(n)[0] AS label, count(n) AS n")}
