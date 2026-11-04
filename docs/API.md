@@ -1,4 +1,4 @@
-# Vixy backend API — `/v1` (Milestone 2)
+# Vixy backend API: `/v1` (Milestone 2)
 
 The JSON interface for the future Vixy app (Milestone 4) and the simulator (Milestone 3).
 Code: `vixy/api.py` (routes) and `vixy/ask.py` (questions). Start it with:
@@ -37,6 +37,11 @@ curl -s localhost:8765/v1/ask -d '{"question": "What do you remember about Alex?
 | POST | `/v1/events/audio` | a CE `AudioSegment`, or `{"asr": {segment_id, start_time, end_time, text, speaker_id?, speaker_is_wearer?, ...}}` | `{outcome}` (`EventOutcome`, see CONTRACTS.md) |
 | POST | `/v1/events/video` | a CE `VideoObservation`, or `{"perception": {frame_id, timestamp, classes, latitude?, longitude?}}` | `{outcome}` |
 | POST | `/v1/dream` | | `{dream}`: the Dreamer run summary (offline unless the runtime was given a model) |
+| GET | `/v1/questions` | `?status=open\|answered\|all&limit=` (default `open` = `pending` + `asked`) | `{questions}`, newest first. Each has `id`, `kind`, `text`, `status`, `priority`, `asked_ms`, `expires_ms`, `answer?`, `about[]` (the Commitment or reminder Note it concerns, with its current `start_ms`, `status`, `prev_start_ms`), `proposal` (the allow-listed operation a "yes" applies, e.g. `update_commitment_time` with the new `start_ms`) and `heard` (the Note of the utterance that raised it) |
+| GET | `/v1/questions/{id}` | | `{question}`, same shape |
+| POST | `/v1/questions/{id}/answer` | `{answer: "yes"\|"no", now?}` | `{decisions, question}`. Runs `ActiveAgent.answer`: "yes" executes the question's `MEMORY_UPDATE` (logged as an AgentLog), "no" changes nothing. `now` defaults to the agent's latest decision time (simulated time), never before the question was asked. 409 `not_open` if already answered or expired |
+| GET | `/v1/commitments` | | `{commitments}`: plans with `title`, `start_ms`, `status` (`tentative`/`confirmed`), `people`, `prev_start_ms` after a confirmed move, `source_event_ids` |
+| GET | `/v1/reminders` | `?status=open\|done\|all` (default `open`) | `{reminders}`: reminder Notes with `status`, `trigger_place_type`, `done_ms` |
 
 ## `vixy.ask.v1`
 

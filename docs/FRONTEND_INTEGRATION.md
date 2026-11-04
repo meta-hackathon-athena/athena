@@ -97,8 +97,13 @@ Keep the base URL in one app config value, e.g. `EXPO_PUBLIC_VIXY_API`, so no ba
 | POST | `/v1/events/audio` | `{"asr": {...}}` or a Context Engine `AudioSegment` | `{outcome}` |
 | POST | `/v1/events/video` | `{"perception": {...}}` or a Context Engine `VideoObservation` | `{outcome}` |
 | POST | `/v1/dream` | | `{dream}`: offline consolidation run summary |
+| GET | `/v1/questions` | `status=open\|answered\|all`, `limit` | `{questions}`: the agent's clarification questions with `about`, `proposal` and `heard` |
+| GET | `/v1/questions/{id}` | | `{question}` |
+| POST | `/v1/questions/{id}/answer` | `{answer: "yes"\|"no", now?}` | `{decisions, question}` |
+| GET | `/v1/commitments` | | `{commitments}`: the user's plans |
+| GET | `/v1/reminders` | `status=open\|done\|all` | `{reminders}` |
 
-Nothing else exists. There are no list routes for people, places or questions, and no route to answer or dismiss a question, acknowledge a notification, or control a replay.
+Nothing else exists. There are no list routes for people or places, and no route to dismiss a question without answering it, acknowledge a notification, or control a replay.
 
 ## 5. Identifiers
 
@@ -261,7 +266,7 @@ An `ASK_USER` decision looks like this:
  "message": "Mark \"buy milk at the supermarket\" as done?", "reason": "user may have completed an open reminder"}
 ```
 
-There is **no API to answer it**, so display it read-only for now.
+Answer it with `POST /v1/questions/{question_id}/answer` and `{"answer": "yes"}` or `"no"` (list open questions with `GET /v1/questions`). A "yes" runs the agent's own allow-listed write, for example confirming a plan's new time or completing a reminder; "no" changes nothing. The web app in [`frontend/web/`](../frontend/web/README.md) uses exactly this.
 
 Polling recipe:
 
@@ -322,7 +327,7 @@ curl -s localhost:8765/v1/events/video -H 'Content-Type: application/json' -d '{
 
 - **One user per backend process.** To switch users, restart `serve` with another `--user`.
 - **Embedded storage** (`FALKORDB_URL` empty) is single-process. Use the Docker FalkorDB server whenever `serve` and `replay`/`ingest` run at the same time.
-- **Polling only.** There is no push, no acknowledgement, no answer route for `ASK_USER`, and no people/places list routes.
+- **Polling only.** There is no push, no acknowledgement, and no people/places list routes. `ASK_USER` questions can be answered with `POST /v1/questions/{id}/answer`.
 - **Speaker identity:** `speaker_id` values are diarization labels or manifest annotations, not recognized people. Answers say they can't confirm who spoke.
 - **Real recordings vs. synthetic data:**
   - The team's real MP4 recordings were processed end to end: 158 events → 47 Notes → 2 Dreamer runs.

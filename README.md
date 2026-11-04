@@ -19,6 +19,53 @@ This repository was created on 2026-11-04 from three original repositories at ve
 [docs/MONOREPO_MIGRATION.md](docs/MONOREPO_MIGRATION.md). Validation results are in
 [docs/reports/VIXY_MONOREPO_VALIDATION.md](docs/reports/VIXY_MONOREPO_VALIDATION.md).
 
+## Athena app: Clarify and Memories
+
+Athena (the product name; the code and CLI are still called `vixy`) frees up mental space by helping
+you clarify what it heard and remember what matters. The web app in [`frontend/web/`](frontend/web/README.md)
+has the two screens used in the demo video:
+
+- **Clarify** (`http://127.0.0.1:5173/#/clarify`): Athena's open yes/no question, the words that
+  raised it, what is saved right now, and what "Yes" will change. Yes and No are sent to the backend.
+- **Memories** (`http://127.0.0.1:5173/#/memories`): memory cards summarizing what the knowledge
+  graph holds: plans, things heard about people (marked "Not verified" when someone else said them),
+  things you said about yourself, and reminders. A card changed by your last answer is highlighted.
+
+Run it (needs Docker for FalkorDB, Node 18 or newer, and `make install` once):
+
+```bash
+make falkordb                         # FalkorDB server on localhost:6390
+make ui-demo VIXY_USER=app_demo       # two synthetic days + one spoken plan change
+make serve VIXY_USER=app_demo         # terminal 1: API on http://127.0.0.1:8765/v1
+make web                              # terminal 2: app on http://127.0.0.1:5173
+```
+
+**Working integrations.** Both screens read live data from the `/v1` API through a same-origin proxy
+(`frontend/web/server.mjs`, Node built-ins only). Answering calls `POST /v1/questions/{id}/answer`,
+which runs the Active Agent's existing `ActiveAgent.answer`: "Yes" applies the question's allow-listed
+graph write (move and confirm a plan, or complete a reminder) and logs it as an AgentLog decision. "No"
+changes nothing. `make ui-demo` creates the demo question by sending one utterance ("Actually I will
+meet Marta on Thursday at 11am.") through the normal ingestion path, see
+[demo/ui/clarification.jsonl](demo/ui/clarification.jsonl).
+
+**Demo fixtures.** `?fixtures=1` (for example `http://127.0.0.1:5173/?fixtures=1#/clarify`) runs the
+app offline from `frontend/web/public/fixtures.js`, a captured snapshot of real responses. An amber
+banner marks it, and answers there are not saved. Regenerate it with
+`node frontend/web/capture-fixtures.mjs`.
+
+**Limitations.**
+
+- Answers change plans and reminders only. No backend operation verifies or rejects a Dreamer
+  memory (for example "Alex is allergic to peanuts"), so those cards stay "Not verified".
+- Questions come from the agent's rules: plan corrections, plan confirmations, clarifying a time,
+  and completing a reminder. The synthetic demo produces two of them.
+- Answers persist. To record again, stop `make serve`, rerun `make ui-demo VIXY_USER=app_demo`, and
+  start it again.
+- Times are simulated event times (Mon 2 to Tue 3 Nov 2026), shown in Asia/Singapore.
+- The embedded graph (`FALKORDB_URL` empty) did not start on macOS arm64 in testing, because the
+  locked `falkordblite` wheel ships a non-macOS `falkordb.so`. Use the Docker server.
+- The API still has no authentication or CORS (see Security below). Keep both servers on `127.0.0.1`.
+
 ## Layout
 
 ```text
@@ -29,7 +76,7 @@ vixy/
 ├── components/
 │   ├── context-engine/       Context Engine (package vixy-context-engine, import context_engine)
 │   └── dreamer-model/        Dreamer (package prod-dreamer-model, import prod_dreamer_model)
-├── frontend/                 reserved for the app (Ara); see frontend/README.md
+├── frontend/                 web/: the Athena web app (Clarify + Memories); the mobile app (Ara) is planned
 ├── tests/                    runtime, agent, memory, integration and M3 tests
 ├── demo/                     MP4 simulator workflow; demo/inputs and demo/outputs are local-only
 ├── scripts/                  bootstrap.sh, test.sh, smoke_test.py, diagnose.sh

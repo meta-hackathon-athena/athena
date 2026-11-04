@@ -12,7 +12,7 @@ REPLAY_ARGS ?=
 FALKORDB_URL ?= redis://localhost:6390
 export FALKORDB_URL
 
-.PHONY: help install install-perception falkordb serve demo-data test test-integration smoke-av test-all replay diagnose
+.PHONY: help install install-perception falkordb serve demo-data ui-demo web test test-integration smoke-av test-all replay diagnose
 
 help:
 	@echo "make install                 uv env + .env + FalkorDB + smoke test (scripts/bootstrap.sh)"
@@ -20,6 +20,8 @@ help:
 	@echo "make falkordb                start the shared FalkorDB server on localhost:6390"
 	@echo "make demo-data VIXY_USER=u   load the two-day M2 demo into a new user (never 'demo')"
 	@echo "make serve VIXY_USER=u       backend API on http://$(HOST):$(PORT)/v1"
+	@echo "make ui-demo VIXY_USER=u     demo-data + one spoken plan change, so the app has a question to clarify"
+	@echo "make web                     Athena web app (Clarify + Memories) on http://127.0.0.1:5173"
 	@echo "make test                    unit suites: context-engine, dreamer-model, runtime (offline)"
 	@echo "make test-integration        FalkorDB server variants, agent scenarios, M1/M2 demos, HTTP smoke"
 	@echo "make smoke-av                M3 audiovisual: MP4 -> YOLO + Whisper -> replay acceptance"
@@ -44,6 +46,12 @@ endef
 demo-data:
 	$(require_user)
 	uv run --frozen python -m vixy --user $(VIXY_USER) --state-dir data/$(VIXY_USER) demo-m2 --fresh
+
+ui-demo: demo-data
+	uv run --frozen python -m vixy --user $(VIXY_USER) --state-dir data/$(VIXY_USER) ingest demo/ui/clarification.jsonl
+
+web:
+	node frontend/web/server.mjs
 
 serve:
 	$(require_user)
