@@ -120,6 +120,69 @@ uv run python -m vixy --user app_demo --state-dir data/app_demo dream --online
 
 Without a key, everything still runs, with the Dreamer's offline rules.
 
+## What's next: Athena that connects
+
+> It's where we're taking Athena after the hackathon.
+
+Today Athena only knows what its own camera and mic saw. To be useful every day, it also has to
+connect to the services you already use, and eventually to other people's Athenas. The rule stays
+the same as everywhere else in Athena: **it asks first, it stays quiet by default, and every
+belief links back to where it came from and is privacy first.**
+
+### Connect to the apps and APIs you already use
+
+Instead of you checking a dozen apps, Athena learns which of them matter to your routines and
+brings in only what's relevant.
+
+- **Bus** Athena notices you catch the 8:10 bus on weekdays (a routine the Dreamer already
+  finds). With a transit API, it can send "Bus 42 is 4 minutes late" at the moment it matters,
+  without you asking.
+- **Deadline email reminders.** A "Report due at 3 pm" email arrives from your manager. Athena asks:
+  *"Want me to read deadline emails from this sender and remind you?"* Say yes in Clarify and
+  at 2:30 you get: *"Your report is due in 30 minutes."* One sender, one purpose, revocable
+  anytime.
+- **Calendar, maps and traffic.** If you're on your way to work and there's a traffic jam on your
+  usual route, Athena can suggest leaving earlier or taking another route, because it already
+  knows where you're headed and when you need to be there.
+
+Every connection would follow the same pattern:
+
+1. Athena sees a pattern and **asks** (Clarify screen).
+2. You approve a **scoped permission** (which source, what it may read, what it may do).
+3. Information from the source enters the graph as a **note with its origin**, marked as coming
+   from that API or email rather than from what you saw, so "not verified" still means something.
+4. The Active Agent applies the same quiet-first rules, so connecting more sources doesn't mean
+   more notifications.
+5. You can see and revoke every permission in the Memories screen.
+
+### Athena to Athena: a social network of memory aids
+
+The bigger idea is that your Athena could talk to other people's Athenas, with each person
+deciding what is shared.
+
+- If a friend's Athena knows they're running 15 minutes late, yours can tell you, so you don't
+  have to wait and wonder.
+- If a family member's Athena learns the pharmacy closed early, the people who need to know can
+  be told.
+- Shared plans (a dinner, a trip, a handover at work) could live as a small shared memory that
+  each Athena reads from, instead of a group chat you have to scroll back through.
+
+This is a new kind of social network. It isn't a feed of posts. It's a set of assistants that
+exchange only what each person has agreed to share. The same provenance rules apply across
+people: something a friend's Athena tells yours is stored as "reported by Marta's Athena", never
+as something you witnessed, exactly like the "that's their plan, not yours" rule today.
+
+### Principles we'd hold to
+
+- **Consent per source and per person.** Nothing is read or shared until you say yes, and each
+  permission is narrow and can be undone.
+- **Local first.** Raw video, audio and the graph stay on your device. Only the minimum needed
+  for a connection (a bus line, a "running late" flag) is exchanged.
+- **Quiet by default.** More connections must not mean more interruptions. The Active Agent's
+  rules decide what's worth saying.
+- **Always explainable.** Every notification can answer "why am I seeing this?" with the source
+  that triggered it.
+
 ## Repository
 
 ```text
